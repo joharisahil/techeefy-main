@@ -3,6 +3,8 @@ import { ThemeContext } from "../../context/ThemeContext";
 import { LIGHT_THEME } from "../../constants/themeConstants";
 import LogoBlue from "../../assets/images/logo_blue.svg";
 import LogoWhite from "../../assets/images/logo_white.svg";
+import { PiStudent, PiChalkboardTeacher, PiExam } from "react-icons/pi";
+import { TfiAnnouncement } from "react-icons/tfi";
 import {
   MdOutlineAttachMoney,
   MdOutlineBarChart,
@@ -78,7 +80,7 @@ const Sidebar = () => {
             <li className="menu-item">
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
-                  <MdOutlineAttachMoney size={20} />
+                  <PiStudent size={20} />
                 </span>
                 <span className="menu-link-text">Student</span>
               </Link>
@@ -86,7 +88,7 @@ const Sidebar = () => {
             <li className="menu-item">
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
-                  <MdOutlineCurrencyExchange size={18} />
+                  <PiChalkboardTeacher size={18} />
                 </span>
                 <span className="menu-link-text">Teacher</span>
               </Link>
@@ -94,7 +96,7 @@ const Sidebar = () => {
             <li className="menu-item">
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
-                  <MdOutlineShoppingBag size={20} />
+                  <TfiAnnouncement size={20} />
                 </span>
                 <span className="menu-link-text">Announcements</span>
               </Link>
@@ -102,7 +104,7 @@ const Sidebar = () => {
             <li className="menu-item">
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
-                  <MdOutlinePeople size={20} />
+                  <MdOutlineCurrencyExchange size={20} />
                 </span>
                 <span className="menu-link-text">Fees</span>
               </Link>
@@ -110,7 +112,7 @@ const Sidebar = () => {
             <li className="menu-item">
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
-                  <MdOutlineMessage size={18} />
+                  <PiExam size={18} />
                 </span>
                 <span className="menu-link-text">Exam</span>
               </Link>
