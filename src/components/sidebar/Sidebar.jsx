@@ -1,9 +1,10 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ThemeContext } from "../../context/ThemeContext";
 import { LIGHT_THEME } from "../../constants/themeConstants";
 import LogoBlue from "../../assets/images/logo_blue.svg";
 import LogoWhite from "../../assets/images/logo_white.svg";
 import { PiStudent, PiChalkboardTeacher, PiExam } from "react-icons/pi";
+import { IoChevronBackOutline, IoChevronDown } from "react-icons/io5";
 import { TfiAnnouncement } from "react-icons/tfi";
 import {
   MdOutlineAttachMoney,
@@ -25,6 +26,7 @@ const Sidebar = () => {
   const { theme } = useContext(ThemeContext);
   const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
   const navbarRef = useRef(null);
+  const [academicList, setAcademicList] = useState(false);
 
   // closing the navbar when clicked outside the sidebar area
   const handleClickOutside = (event) => {
@@ -69,14 +71,49 @@ const Sidebar = () => {
                 <span className="menu-link-text">Dashboard</span>
               </Link>
             </li>
-            <li className="menu-item">
+            <li
+              className="menu-item"
+              onClick={() => {
+                setAcademicList(!academicList);
+              }}
+            >
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
                   <MdOutlineBarChart size={20} />
                 </span>
                 <span className="menu-link-text">Academic</span>
+                <span className="menu-link-chevron">
+                  {academicList ? (
+                    <IoChevronDown size={20} />
+                  ) : (
+                    <IoChevronBackOutline size={20} />
+                  )}
+                </span>
               </Link>
             </li>
+            {academicList && (
+              <>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span
+                      className="menu-link-text"
+                      style={{ marginLeft: "2rem" }}
+                    >
+                      Class
+                    </span>
+                  </Link>
+                </li>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span className="menu-link-icon">
+                      <MdOutlineBarChart size={20} />
+                    </span>
+                    <span className="menu-link-text">Class</span>
+                  </Link>
+                </li>
+              </>
+            )}
+
             <li className="menu-item">
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">

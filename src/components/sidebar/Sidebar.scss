@@ -152,7 +152,7 @@
     }
   }
 
-  .mennu-link-icon{
+  .menu-link-icon{
     display: flex;
     align-items: center;
   }
@@ -167,6 +167,18 @@
     @media(max-width: 768px){
         display: inline-block;
     }
+  }
+
+  .menu-link-chevron {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    @media(max-width: 1200px){
+      display: none;
+  }
+    @media(max-width: 768px){
+      display: inline-block;
+  }
   }
 
   .sidebar-body{
