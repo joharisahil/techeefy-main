@@ -34,6 +34,7 @@ const Sidebar = () => {
   const [studentSubList, setStudentSubList] = useState(false);
   const [teacherSubList, setTeacherSubList] = useState(false);
   const [timeTableSubList, setTimeTableSubList] = useState(false);
+  const [feeSubList, setFeeSubList] = useState(false);
 
   // closing the navbar when clicked outside the sidebar area
   const handleClickOutside = (event) => {
@@ -271,14 +272,55 @@ const Sidebar = () => {
                 </li>
               </>
             )}
-            <li className="menu-item">
+            <li
+              className="menu-item"
+              onClick={() => {
+                setFeeSubList(!feeSubList);
+                //setAcademicSubList(false);
+              }}
+            >
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
                   <MdOutlineCurrencyExchange size={20} />
                 </span>
                 <span className="menu-link-text">Fees</span>
+                <span className="menu-link-chevron">
+                  {feeSubList ? (
+                    <IoChevronDown size={20} />
+                  ) : (
+                    <IoChevronBackOutline size={20} />
+                  )}
+                </span>
               </Link>
             </li>
+            {feeSubList && (
+              <>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span className="menu-link-text sub-list">Fees type</span>
+                  </Link>
+                </li>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span className="menu-link-text sub-list">
+                      Assign Fees Classes
+                    </span>
+                  </Link>
+                </li>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span className="menu-link-text sub-list">Fees Paid</span>
+                  </Link>
+                </li>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span className="menu-link-text sub-list">
+                      Fees Transaction Logs
+                    </span>
+                  </Link>
+                </li>
+              </>
+            )}
             <li className="menu-item">
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
