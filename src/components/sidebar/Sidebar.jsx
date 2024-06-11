@@ -27,6 +27,7 @@ const Sidebar = () => {
   const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
   const navbarRef = useRef(null);
   const [academicList, setAcademicList] = useState(false);
+  const [studentSubList, setStudentSubList] = useState(false);
 
   // closing the navbar when clicked outside the sidebar area
   const handleClickOutside = (event) => {
@@ -136,15 +137,52 @@ const Sidebar = () => {
                 </li>
               </>
             )}
-
-            <li className="menu-item">
+            <li
+              className="menu-item"
+              onClick={() => {
+                setStudentSubList(!studentSubList);
+              }}
+            >
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
                   <PiStudent size={20} />
                 </span>
-                <span className="menu-link-text">Student</span>
+                <span className="menu-link-text">Students</span>
+                <span className="menu-link-chevron">
+                  {studentSubList ? (
+                    <IoChevronDown size={20} />
+                  ) : (
+                    <IoChevronBackOutline size={20} />
+                  )}
+                </span>
               </Link>
             </li>
+            {studentSubList && (
+              <>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span className="menu-link-text sub-list">
+                      Students Admission
+                    </span>
+                  </Link>
+                </li>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span className="menu-link-text sub-list">
+                      Student Details
+                    </span>
+                  </Link>
+                </li>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span className="menu-link-text sub-list">
+                      Add Bulk Data
+                    </span>
+                  </Link>
+                </li>
+              </>
+            )}
+
             <li className="menu-item">
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
