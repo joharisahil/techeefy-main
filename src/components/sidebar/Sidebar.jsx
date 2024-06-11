@@ -84,6 +84,11 @@ const Sidebar = () => {
               className="menu-item"
               onClick={() => {
                 setAcademicSubList(!academicSubList);
+                setStudentSubList(false);
+                setTeacherSubList(false);
+                setFeeSubList(false);
+                setExamSubList(false);
+                setTimeTableSubList(false);
               }}
             >
               <Link to="/" className="menu-link">
@@ -149,6 +154,11 @@ const Sidebar = () => {
               className="menu-item"
               onClick={() => {
                 setStudentSubList(!studentSubList);
+                setAcademicSubList(false);
+                setTeacherSubList(false);
+                setFeeSubList(false);
+                setExamSubList(false);
+                setTimeTableSubList(false);
               }}
             >
               <Link to="/" className="menu-link">
@@ -194,6 +204,11 @@ const Sidebar = () => {
               className="menu-item"
               onClick={() => {
                 setTeacherSubList(!teacherSubList);
+                setAcademicSubList(false);
+                setStudentSubList(false);
+                setFeeSubList(false);
+                setExamSubList(false);
+                setTimeTableSubList(false);
               }}
             >
               <Link to="/" className="menu-link">
@@ -202,7 +217,7 @@ const Sidebar = () => {
                 </span>
                 <span className="menu-link-text">Teacher</span>
                 <span className="menu-link-chevron">
-                  {studentSubList ? (
+                  {teacherSubList ? (
                     <IoChevronDown size={20} />
                   ) : (
                     <IoChevronBackOutline size={20} />
@@ -232,6 +247,11 @@ const Sidebar = () => {
               className="menu-item"
               onClick={() => {
                 setTimeTableSubList(!timeTableSubList);
+                setAcademicSubList(false);
+                setStudentSubList(false);
+                setTeacherSubList(false);
+                setFeeSubList(false);
+                setExamSubList(false);
               }}
             >
               <Link to="/" className="menu-link">
@@ -277,7 +297,11 @@ const Sidebar = () => {
               className="menu-item"
               onClick={() => {
                 setFeeSubList(!feeSubList);
-                //setAcademicSubList(false);
+                setStudentSubList(false);
+                setTeacherSubList(false);
+                setExamSubList(false);
+                setTimeTableSubList(false);
+                setAcademicSubList(false);
               }}
             >
               <Link to="/" className="menu-link">
@@ -326,6 +350,11 @@ const Sidebar = () => {
               className="menu-item"
               onClick={() => {
                 setExamSubList(!examSubList);
+                setAcademicSubList(false);
+                setStudentSubList(false);
+                setTeacherSubList(false);
+                setFeeSubList(false);
+                setTimeTableSubList(false);
               }}
             >
               <Link to="/" className="menu-link">
