@@ -28,6 +28,7 @@ const Sidebar = () => {
   const navbarRef = useRef(null);
   const [academicList, setAcademicList] = useState(false);
   const [studentSubList, setStudentSubList] = useState(false);
+  const [teacherSubList, setTeacherSubList] = useState(false);
 
   // closing the navbar when clicked outside the sidebar area
   const handleClickOutside = (event) => {
@@ -182,15 +183,45 @@ const Sidebar = () => {
                 </li>
               </>
             )}
-
-            <li className="menu-item">
+            <li
+              className="menu-item"
+              onClick={() => {
+                setTeacherSubList(!teacherSubList);
+              }}
+            >
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
                   <PiChalkboardTeacher size={18} />
                 </span>
                 <span className="menu-link-text">Teacher</span>
+                <span className="menu-link-chevron">
+                  {studentSubList ? (
+                    <IoChevronDown size={20} />
+                  ) : (
+                    <IoChevronBackOutline size={20} />
+                  )}
+                </span>
               </Link>
             </li>
+            {teacherSubList && (
+              <>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span className="menu-link-text sub-list">
+                      Add New Teacher
+                    </span>
+                  </Link>
+                </li>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span className="menu-link-text sub-list">
+                      Teacher Details
+                    </span>
+                  </Link>
+                </li>
+              </>
+            )}
+
             <li className="menu-item">
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
