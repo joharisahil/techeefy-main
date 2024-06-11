@@ -30,9 +30,10 @@ const Sidebar = () => {
   const { theme } = useContext(ThemeContext);
   const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
   const navbarRef = useRef(null);
-  const [academicList, setAcademicList] = useState(false);
+  const [academicSubList, setAcademicSubList] = useState(false);
   const [studentSubList, setStudentSubList] = useState(false);
   const [teacherSubList, setTeacherSubList] = useState(false);
+  const [timeTableSubList, setTimeTableSubList] = useState(false);
 
   // closing the navbar when clicked outside the sidebar area
   const handleClickOutside = (event) => {
@@ -80,7 +81,7 @@ const Sidebar = () => {
             <li
               className="menu-item"
               onClick={() => {
-                setAcademicList(!academicList);
+                setAcademicSubList(!academicSubList);
               }}
             >
               <Link to="/" className="menu-link">
@@ -89,7 +90,7 @@ const Sidebar = () => {
                 </span>
                 <span className="menu-link-text">Academics</span>
                 <span className="menu-link-chevron">
-                  {academicList ? (
+                  {academicSubList ? (
                     <IoChevronDown size={20} />
                   ) : (
                     <IoChevronBackOutline size={20} />
@@ -97,7 +98,7 @@ const Sidebar = () => {
                 </span>
               </Link>
             </li>
-            {academicList && (
+            {academicSubList && (
               <>
                 <li className="menu-item text-hide">
                   <Link to="/" className="menu-link">
@@ -225,6 +226,51 @@ const Sidebar = () => {
                 </li>
               </>
             )}
+            <li
+              className="menu-item"
+              onClick={() => {
+                setTimeTableSubList(!timeTableSubList);
+              }}
+            >
+              <Link to="/" className="menu-link">
+                <span className="menu-link-icon">
+                  <IoCalendarOutline size={20} />
+                </span>
+                <span className="menu-link-text">Time Table</span>
+                <span className="menu-link-chevron">
+                  {timeTableSubList ? (
+                    <IoChevronDown size={20} />
+                  ) : (
+                    <IoChevronBackOutline size={20} />
+                  )}
+                </span>
+              </Link>
+            </li>
+            {timeTableSubList && (
+              <>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span className="menu-link-text sub-list">
+                      Create Timetable
+                    </span>
+                  </Link>
+                </li>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span className="menu-link-text sub-list">
+                      Class Timetable
+                    </span>
+                  </Link>
+                </li>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span className="menu-link-text sub-list">
+                      Teacher Timetable
+                    </span>
+                  </Link>
+                </li>
+              </>
+            )}
             <li className="menu-item">
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
@@ -247,14 +293,6 @@ const Sidebar = () => {
                   <TfiAnnouncement size={20} />
                 </span>
                 <span className="menu-link-text">Announcements</span>
-              </Link>
-            </li>
-            <li className="menu-item">
-              <Link to="/" className="menu-link">
-                <span className="menu-link-icon">
-                  <IoCalendarOutline size={20} />
-                </span>
-                <span className="menu-link-text">Time Table</span>
               </Link>
             </li>
           </ul>
