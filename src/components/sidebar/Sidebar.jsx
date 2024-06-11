@@ -81,7 +81,7 @@ const Sidebar = () => {
                 <span className="menu-link-icon">
                   <MdOutlineBarChart size={20} />
                 </span>
-                <span className="menu-link-text">Academic</span>
+                <span className="menu-link-text">Academics</span>
                 <span className="menu-link-chevron">
                   {academicList ? (
                     <IoChevronDown size={20} />
@@ -95,20 +95,43 @@ const Sidebar = () => {
               <>
                 <li className="menu-item text-hide">
                   <Link to="/" className="menu-link">
-                    <span
-                      className="menu-link-text"
-                      style={{ marginLeft: "2rem" }}
-                    >
-                      Class
+                    <span className="menu-link-text sub-list">Section</span>
+                  </Link>
+                </li>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span className="menu-link-text sub-list">Stream</span>
+                  </Link>
+                </li>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span className="menu-link-text sub-list">Subjects</span>
+                  </Link>
+                </li>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span className="menu-link-text sub-list">Class</span>
+                  </Link>
+                </li>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span className="menu-link-text sub-list">
+                      Assign Class Subjects
                     </span>
                   </Link>
                 </li>
                 <li className="menu-item text-hide">
                   <Link to="/" className="menu-link">
-                    <span className="menu-link-icon">
-                      <MdOutlineBarChart size={20} />
+                    <span className="menu-link-text sub-list">
+                      Assign Class Teacher
                     </span>
-                    <span className="menu-link-text">Class</span>
+                  </Link>
+                </li>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span className="menu-link-text sub-list">
+                      Assign Subject Teacher
+                    </span>
                   </Link>
                 </li>
               </>
