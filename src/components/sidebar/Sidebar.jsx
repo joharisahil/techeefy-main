@@ -55,6 +55,16 @@ const Sidebar = () => {
     };
   }, []);
 
+  // closing other fields when clicked on a field
+  const handleSubListToggle = (
+    currentSubListState,
+    setCurrentSubList,
+    ...otherSetters
+  ) => {
+    setCurrentSubList(!currentSubListState);
+    otherSetters.forEach((setter) => setter(false));
+  };
+
   return (
     <nav
       className={`sidebar ${isSidebarOpen ? "sidebar-show" : ""}`}
@@ -82,14 +92,17 @@ const Sidebar = () => {
             </li>
             <li
               className="menu-item"
-              onClick={() => {
-                setAcademicSubList(!academicSubList);
-                setStudentSubList(false);
-                setTeacherSubList(false);
-                setFeeSubList(false);
-                setExamSubList(false);
-                setTimeTableSubList(false);
-              }}
+              onClick={() =>
+                handleSubListToggle(
+                  academicSubList,
+                  setAcademicSubList,
+                  setStudentSubList,
+                  setTeacherSubList,
+                  setFeeSubList,
+                  setExamSubList,
+                  setTimeTableSubList
+                )
+              }
             >
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
@@ -152,14 +165,17 @@ const Sidebar = () => {
             )}
             <li
               className="menu-item"
-              onClick={() => {
-                setStudentSubList(!studentSubList);
-                setAcademicSubList(false);
-                setTeacherSubList(false);
-                setFeeSubList(false);
-                setExamSubList(false);
-                setTimeTableSubList(false);
-              }}
+              onClick={() =>
+                handleSubListToggle(
+                  studentSubList,
+                  setStudentSubList,
+                  setAcademicSubList,
+                  setTeacherSubList,
+                  setFeeSubList,
+                  setExamSubList,
+                  setTimeTableSubList
+                )
+              }
             >
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
@@ -202,14 +218,17 @@ const Sidebar = () => {
             )}
             <li
               className="menu-item"
-              onClick={() => {
-                setTeacherSubList(!teacherSubList);
-                setAcademicSubList(false);
-                setStudentSubList(false);
-                setFeeSubList(false);
-                setExamSubList(false);
-                setTimeTableSubList(false);
-              }}
+              onClick={() =>
+                handleSubListToggle(
+                  teacherSubList,
+                  setTeacherSubList,
+                  setAcademicSubList,
+                  setStudentSubList,
+                  setFeeSubList,
+                  setExamSubList,
+                  setTimeTableSubList
+                )
+              }
             >
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
@@ -245,14 +264,17 @@ const Sidebar = () => {
             )}
             <li
               className="menu-item"
-              onClick={() => {
-                setTimeTableSubList(!timeTableSubList);
-                setAcademicSubList(false);
-                setStudentSubList(false);
-                setTeacherSubList(false);
-                setFeeSubList(false);
-                setExamSubList(false);
-              }}
+              onClick={() =>
+                handleSubListToggle(
+                  timeTableSubList,
+                  setTimeTableSubList,
+                  setAcademicSubList,
+                  setStudentSubList,
+                  setTeacherSubList,
+                  setFeeSubList,
+                  setExamSubList
+                )
+              }
             >
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
@@ -295,14 +317,17 @@ const Sidebar = () => {
             )}
             <li
               className="menu-item"
-              onClick={() => {
-                setFeeSubList(!feeSubList);
-                setStudentSubList(false);
-                setTeacherSubList(false);
-                setExamSubList(false);
-                setTimeTableSubList(false);
-                setAcademicSubList(false);
-              }}
+              onClick={() =>
+                handleSubListToggle(
+                  feeSubList,
+                  setFeeSubList,
+                  setStudentSubList,
+                  setTeacherSubList,
+                  setExamSubList,
+                  setTimeTableSubList,
+                  setAcademicSubList
+                )
+              }
             >
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
@@ -348,14 +373,17 @@ const Sidebar = () => {
             )}
             <li
               className="menu-item"
-              onClick={() => {
-                setExamSubList(!examSubList);
-                setAcademicSubList(false);
-                setStudentSubList(false);
-                setTeacherSubList(false);
-                setFeeSubList(false);
-                setTimeTableSubList(false);
-              }}
+              onClick={() =>
+                handleSubListToggle(
+                  examSubList,
+                  setExamSubList,
+                  setAcademicSubList,
+                  setStudentSubList,
+                  setTeacherSubList,
+                  setFeeSubList,
+                  setTimeTableSubList
+                )
+              }
             >
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
