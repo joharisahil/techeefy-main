@@ -35,6 +35,7 @@ const Sidebar = () => {
   const [teacherSubList, setTeacherSubList] = useState(false);
   const [timeTableSubList, setTimeTableSubList] = useState(false);
   const [feeSubList, setFeeSubList] = useState(false);
+  const [examSubList, setExamSubList] = useState(false);
 
   // closing the navbar when clicked outside the sidebar area
   const handleClickOutside = (event) => {
@@ -321,14 +322,42 @@ const Sidebar = () => {
                 </li>
               </>
             )}
-            <li className="menu-item">
+            <li
+              className="menu-item"
+              onClick={() => {
+                setExamSubList(!examSubList);
+              }}
+            >
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
                   <PiExam size={18} />
                 </span>
                 <span className="menu-link-text">Exam</span>
+                <span className="menu-link-chevron">
+                  {examSubList ? (
+                    <IoChevronDown size={20} />
+                  ) : (
+                    <IoChevronBackOutline size={20} />
+                  )}
+                </span>
               </Link>
             </li>
+            {examSubList && (
+              <>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span className="menu-link-text sub-list">Create Exam</span>
+                  </Link>
+                </li>
+                <li className="menu-item text-hide">
+                  <Link to="/" className="menu-link">
+                    <span className="menu-link-text sub-list">
+                      Create Exam Timetable
+                    </span>
+                  </Link>
+                </li>
+              </>
+            )}
             <li className="menu-item">
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
