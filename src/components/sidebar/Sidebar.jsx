@@ -4,7 +4,11 @@ import { LIGHT_THEME } from "../../constants/themeConstants";
 import LogoBlue from "../../assets/images/logo_blue.svg";
 import LogoWhite from "../../assets/images/logo_white.svg";
 import { PiStudent, PiChalkboardTeacher, PiExam } from "react-icons/pi";
-import { IoChevronBackOutline, IoChevronDown } from "react-icons/io5";
+import {
+  IoChevronBackOutline,
+  IoChevronDown,
+  IoCalendarOutline,
+} from "react-icons/io5";
 import { TfiAnnouncement } from "react-icons/tfi";
 import {
   MdOutlineAttachMoney,
@@ -221,15 +225,6 @@ const Sidebar = () => {
                 </li>
               </>
             )}
-
-            <li className="menu-item">
-              <Link to="/" className="menu-link">
-                <span className="menu-link-icon">
-                  <TfiAnnouncement size={20} />
-                </span>
-                <span className="menu-link-text">Announcements</span>
-              </Link>
-            </li>
             <li className="menu-item">
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
@@ -244,6 +239,22 @@ const Sidebar = () => {
                   <PiExam size={18} />
                 </span>
                 <span className="menu-link-text">Exam</span>
+              </Link>
+            </li>
+            <li className="menu-item">
+              <Link to="/" className="menu-link">
+                <span className="menu-link-icon">
+                  <TfiAnnouncement size={20} />
+                </span>
+                <span className="menu-link-text">Announcements</span>
+              </Link>
+            </li>
+            <li className="menu-item">
+              <Link to="/" className="menu-link">
+                <span className="menu-link-icon">
+                  <IoCalendarOutline size={20} />
+                </span>
+                <span className="menu-link-text">Time Table</span>
               </Link>
             </li>
           </ul>
