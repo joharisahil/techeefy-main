@@ -234,7 +234,7 @@ const Sidebar = () => {
                 <span className="menu-link-icon">
                   <PiChalkboardTeacher size={18} />
                 </span>
-                <span className="menu-link-text">Teacher</span>
+                <span className="menu-link-text">Teachers</span>
                 <span className="menu-link-chevron">
                   {teacherSubList ? (
                     <IoChevronDown size={20} />
