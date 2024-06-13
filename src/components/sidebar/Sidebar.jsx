@@ -37,6 +37,7 @@ const Sidebar = () => {
   const [feeSubList, setFeeSubList] = useState(false);
   const [examSubList, setExamSubList] = useState(false);
   const [dashboard, setDashboard] = useState(false);
+  const [announcement, setAnnouncement] = useState(false);
   const [selectedState, setSelectedState] = useState("dashboard");
 
   // closing the navbar when clicked outside the sidebar area
@@ -431,7 +432,21 @@ const Sidebar = () => {
                 </li>
               </>
             )}
-            <li className="menu-item">
+            <li
+              className="menu-item"
+              onClick={() =>
+                handleSubListToggle(
+                  announcement,
+                  setAnnouncement,
+                  setAcademicSubList,
+                  setStudentSubList,
+                  setTeacherSubList,
+                  setFeeSubList,
+                  setExamSubList,
+                  setTimeTableSubList
+                )
+              }
+            >
               <Link to="/" className="menu-link">
                 <span className="menu-link-icon">
                   <TfiAnnouncement size={20} />
