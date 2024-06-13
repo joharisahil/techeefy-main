@@ -38,7 +38,9 @@ const Sidebar = () => {
   const [examSubList, setExamSubList] = useState(false);
   const [dashboard, setDashboard] = useState(false);
   const [announcement, setAnnouncement] = useState(false);
-  const [selectedTab, setSelectedTab] = useState("Dashboard");
+  const [selectedTab, setSelectedTab] = useState(
+    localStorage.getItem("selectedTab") || "Dashboard"
+  );
 
   // closing the navbar when clicked outside the sidebar area
   const handleClickOutside = (event) => {
@@ -57,6 +59,70 @@ const Sidebar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  // Storing the selected state so that should not change on refresh of page
+  useEffect(() => {
+    const storedTab = localStorage.getItem("selectedTab");
+    if (storedTab) {
+      setSelectedTab(storedTab);
+    }
+  }, []);
+
+  // Store the selected tab in local storage whenever it changes
+  const handleTabSelection = (tab) => {
+    setSelectedTab(tab);
+    localStorage.setItem("selectedTab", tab);
+  };
+
+  // Store the selectedTab for not closing the nested list if the user has refreshed the page
+  useEffect(() => {
+    localStorage.setItem("selectedTab", selectedTab);
+
+    // Open corresponding sublist if the selected tab is in a nested list
+    if (
+      [
+        "Section",
+        "Stream",
+        "Subjects",
+        "Class",
+        "Assign Class Subjects",
+        "Assign Class Teacher",
+        "Assign Subject Teacher",
+      ].includes(selectedTab)
+    ) {
+      setAcademicSubList(true);
+    }
+    if (
+      ["Students Admission", "Student Details", "Add Bulk Data"].includes(
+        selectedTab
+      )
+    ) {
+      setStudentSubList(true);
+    }
+    if (["Add New Teacher", "Teacher Details"].includes(selectedTab)) {
+      setTeacherSubList(true);
+    }
+    if (
+      ["Create Timetable", "Class Timetable", "Teacher Timetable"].includes(
+        selectedTab
+      )
+    ) {
+      setTimeTableSubList(true);
+    }
+    if (
+      [
+        "Fees type",
+        "Assign Fees Classes",
+        "Fees Paid",
+        "Fees Transaction Logs",
+      ].includes(selectedTab)
+    ) {
+      setFeeSubList(true);
+    }
+    if (["Create Exam", "Create Exam Timetable"].includes(selectedTab)) {
+      setExamSubList(true);
+    }
+  }, [selectedTab]);
 
   // closing other fields when clicked on a field
   const handleSubListToggle = (
@@ -88,7 +154,7 @@ const Sidebar = () => {
             <li
               className="menu-item"
               onClick={() => {
-                setSelectedTab("Dashboard");
+                handleTabSelection("Dashboard");
                 handleSubListToggle(
                   dashboard,
                   setDashboard,
@@ -146,7 +212,7 @@ const Sidebar = () => {
                 <li
                   className="menu-item text-hide"
                   onClick={() => {
-                    setSelectedTab("Section");
+                    handleTabSelection("Section");
                   }}
                 >
                   <Link
@@ -161,7 +227,7 @@ const Sidebar = () => {
                 <li
                   className="menu-item text-hide"
                   onClick={() => {
-                    setSelectedTab("Stream");
+                    handleTabSelection("Stream");
                   }}
                 >
                   <Link
@@ -176,7 +242,7 @@ const Sidebar = () => {
                 <li
                   className="menu-item text-hide"
                   onClick={() => {
-                    setSelectedTab("Subjects");
+                    handleTabSelection("Subjects");
                   }}
                 >
                   <Link
@@ -191,7 +257,7 @@ const Sidebar = () => {
                 <li
                   className="menu-item text-hide"
                   onClick={() => {
-                    setSelectedTab("Class");
+                    handleTabSelection("Class");
                   }}
                 >
                   <Link
@@ -206,7 +272,7 @@ const Sidebar = () => {
                 <li
                   className="menu-item text-hide"
                   onClick={() => {
-                    setSelectedTab("Assign Class Subjects");
+                    handleTabSelection("Assign Class Subjects");
                   }}
                 >
                   <Link
@@ -223,7 +289,7 @@ const Sidebar = () => {
                 <li
                   className="menu-item text-hide"
                   onClick={() => {
-                    setSelectedTab("Assign Class Teacher");
+                    handleTabSelection("Assign Class Teacher");
                   }}
                 >
                   <Link
@@ -240,7 +306,7 @@ const Sidebar = () => {
                 <li
                   className="menu-item text-hide"
                   onClick={() => {
-                    setSelectedTab("Assign Subject Teacher");
+                    handleTabSelection("Assign Subject Teacher");
                   }}
                 >
                   <Link
