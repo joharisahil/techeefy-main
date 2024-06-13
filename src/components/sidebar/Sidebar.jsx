@@ -220,15 +220,35 @@ const Sidebar = () => {
                     </span>
                   </Link>
                 </li>
-                <li className="menu-item text-hide">
-                  <Link to="/assignclassteacher" className="menu-link">
+                <li
+                  className="menu-item text-hide"
+                  onClick={() => {
+                    setSelectedTab("Assign Class Teacher");
+                  }}
+                >
+                  <Link
+                    to="/assignclassteacher"
+                    className={`menu-link ${
+                      selectedTab === "Assign Class Teacher" && "active"
+                    }`}
+                  >
                     <span className="menu-link-text sub-list">
                       Assign Class Teacher
                     </span>
                   </Link>
                 </li>
-                <li className="menu-item text-hide">
-                  <Link to="/assignsubjectteacher" className="menu-link">
+                <li
+                  className="menu-item text-hide"
+                  onClick={() => {
+                    setSelectedTab("Assign Subject Teacher");
+                  }}
+                >
+                  <Link
+                    to="/assignsubjectteacher"
+                    className={`menu-link ${
+                      selectedTab === "Assign Subject Teacher" && "active"
+                    }`}
+                  >
                     <span className="menu-link-text sub-list">
                       Assign Subject Teacher
                     </span>
