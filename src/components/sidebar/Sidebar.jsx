@@ -38,7 +38,7 @@ const Sidebar = () => {
   const [examSubList, setExamSubList] = useState(false);
   const [dashboard, setDashboard] = useState(false);
   const [announcement, setAnnouncement] = useState(false);
-  const [selectedState, setSelectedState] = useState("dashboard");
+  const [selectedTab, setSelectedTab] = useState("Dashboard");
 
   // closing the navbar when clicked outside the sidebar area
   const handleClickOutside = (event) => {
@@ -87,7 +87,8 @@ const Sidebar = () => {
           <ul className="menu-list">
             <li
               className="menu-item"
-              onClick={() =>
+              onClick={() => {
+                setSelectedTab("Dashboard");
                 handleSubListToggle(
                   dashboard,
                   setDashboard,
@@ -97,10 +98,15 @@ const Sidebar = () => {
                   setFeeSubList,
                   setExamSubList,
                   setTimeTableSubList
-                )
-              }
+                );
+              }}
             >
-              <Link to="/" className="menu-link active">
+              <Link
+                to="/"
+                className={`menu-link ${
+                  selectedTab === "Dashboard" && "active"
+                }`}
+              >
                 <span className="menu-link-icon">
                   <MdOutlineGridView size={18} />
                 </span>
@@ -121,7 +127,7 @@ const Sidebar = () => {
                 )
               }
             >
-              <Link to="/" className="menu-link">
+              <Link className="menu-link">
                 <span className="menu-link-icon">
                   <MdOutlineBarChart size={20} />
                 </span>
@@ -137,8 +143,18 @@ const Sidebar = () => {
             </li>
             {academicSubList && (
               <>
-                <li className="menu-item text-hide">
-                  <Link to="/sections" className="menu-link">
+                <li
+                  className="menu-item text-hide"
+                  onClick={() => {
+                    setSelectedTab("Section");
+                  }}
+                >
+                  <Link
+                    to="/sections"
+                    className={`menu-link ${
+                      selectedTab === "Section" && "active"
+                    }`}
+                  >
                     <span className="menu-link-text sub-list">Section</span>
                   </Link>
                 </li>
