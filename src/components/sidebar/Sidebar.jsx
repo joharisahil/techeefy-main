@@ -173,8 +173,18 @@ const Sidebar = () => {
                     <span className="menu-link-text sub-list">Stream</span>
                   </Link>
                 </li>
-                <li className="menu-item text-hide">
-                  <Link to="/subjects" className="menu-link">
+                <li
+                  className="menu-item text-hide"
+                  onClick={() => {
+                    setSelectedTab("Subjects");
+                  }}
+                >
+                  <Link
+                    to="/subjects"
+                    className={`menu-link ${
+                      selectedTab === "Subjects" && "active"
+                    }`}
+                  >
                     <span className="menu-link-text sub-list">Subjects</span>
                   </Link>
                 </li>
