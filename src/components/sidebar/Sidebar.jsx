@@ -1,5 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
+import { NavLink } from "react-router-dom";
 import { ThemeContext } from "../../context/ThemeContext";
+import { SidebarContext } from "../../context/SidebarContext";
 import { LIGHT_THEME } from "../../constants/themeConstants";
 import LogoBlue from "../../assets/images/logo_blue.svg";
 import LogoWhite from "../../assets/images/logo_white.svg";
@@ -22,32 +24,27 @@ import {
   MdOutlineSettings,
   MdOutlineShoppingBag,
 } from "react-icons/md";
-import { Link } from "react-router-dom";
 import "./Sidebar.scss";
-import { SidebarContext } from "../../context/SidebarContext";
 
 const Sidebar = () => {
   const { theme } = useContext(ThemeContext);
   const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
   const navbarRef = useRef(null);
+  const [dashboard, setDashboard] = useState(false);
   const [academicSubList, setAcademicSubList] = useState(false);
   const [studentSubList, setStudentSubList] = useState(false);
   const [teacherSubList, setTeacherSubList] = useState(false);
   const [timeTableSubList, setTimeTableSubList] = useState(false);
   const [feeSubList, setFeeSubList] = useState(false);
   const [examSubList, setExamSubList] = useState(false);
-  const [dashboard, setDashboard] = useState(false);
   const [announcement, setAnnouncement] = useState(false);
-  const [selectedTab, setSelectedTab] = useState(
-    localStorage.getItem("selectedTab") || "Dashboard"
-  );
 
   // closing the navbar when clicked outside the sidebar area
   const handleClickOutside = (event) => {
     if (
       navbarRef.current &&
       !navbarRef.current.contains(event.target) &&
-      event.target.className !== "sidebar-oepn-btn"
+      event.target.className !== "sidebar-open-btn"
     ) {
       closeSidebar();
     }
@@ -60,69 +57,43 @@ const Sidebar = () => {
     };
   }, []);
 
-  // Storing the selected state so that should not change on refresh of page
   useEffect(() => {
-    const storedTab = localStorage.getItem("selectedTab");
-    if (storedTab) {
-      setSelectedTab(storedTab);
-    }
-  }, []);
-
-  // Store the selected tab in local storage whenever it changes
-  const handleTabSelection = (tab) => {
-    setSelectedTab(tab);
-    localStorage.setItem("selectedTab", tab);
-  };
-
-  // Store the selectedTab for not closing the nested list if the user has refreshed the page
-  useEffect(() => {
-    localStorage.setItem("selectedTab", selectedTab);
-
-    // Open corresponding sublist if the selected tab is in a nested list
+    const path = location.pathname;
     if (
-      [
-        "Section",
-        "Stream",
-        "Subjects",
-        "Class",
-        "Assign Class Subjects",
-        "Assign Class Teacher",
-        "Assign Subject Teacher",
-      ].includes(selectedTab)
+      path.startsWith("/sections") ||
+      path.startsWith("/streams") ||
+      path.startsWith("/subjects") ||
+      path.startsWith("/class") ||
+      path.startsWith("/assignclasssubjects") ||
+      path.startsWith("/assignclassteacher") ||
+      path.startsWith("/assignsubjectteacher")
     ) {
       setAcademicSubList(true);
     }
     if (
-      ["Students Admission", "Student Details", "Add Bulk Data"].includes(
-        selectedTab
-      )
+      path.startsWith("/students") ||
+      path.startsWith("/studentsadmission") ||
+      path.startsWith("/studentdetail") ||
+      path.startsWith("/addbulkdata")
     ) {
       setStudentSubList(true);
     }
-    if (["Add New Teacher", "Teacher Details"].includes(selectedTab)) {
+    if (path.startsWith("/teachers")) {
       setTeacherSubList(true);
     }
-    if (
-      ["Create Timetable", "Class Timetable", "Teacher Timetable"].includes(
-        selectedTab
-      )
-    ) {
+    if (path.startsWith("/timetable")) {
       setTimeTableSubList(true);
     }
-    if (
-      [
-        "Fees type",
-        "Assign Fees Classes",
-        "Fees Paid",
-        "Fees Transaction Logs",
-      ].includes(selectedTab)
-    ) {
+    if (path.startsWith("/fees")) {
       setFeeSubList(true);
     }
-    if (["Create Exam", "Create Exam Timetable"].includes(selectedTab)) {
+    if (path.startsWith("/exams")) {
       setExamSubList(true);
     }
-  }, [selectedTab]);
+    if (path.startsWith("/announcements")) {
+      setAnnouncement(true);
+    }
+  }, [location.pathname]);
 
   // closing other fields when clicked on a field
   const handleSubListToggle = (
@@ -153,8 +124,7 @@ const Sidebar = () => {
           <ul className="menu-list">
             <li
               className="menu-item"
-              onClick={() => {
-                handleTabSelection("Dashboard");
+              onClick={() =>
                 handleSubListToggle(
                   dashboard,
                   setDashboard,
@@ -164,36 +134,36 @@ const Sidebar = () => {
                   setFeeSubList,
                   setExamSubList,
                   setTimeTableSubList
-                );
-              }}
+                )
+              }
             >
-              <Link
+              <NavLink
+                exact
                 to="/"
-                className={`menu-link ${
-                  selectedTab === "Dashboard" && "active"
-                }`}
+                activeClassName="active"
+                className="menu-link"
               >
                 <span className="menu-link-icon">
                   <MdOutlineGridView size={18} />
                 </span>
                 <span className="menu-link-text">Dashboard</span>
-              </Link>
+              </NavLink>
             </li>
-            <li
-              className="menu-item"
-              onClick={() =>
-                handleSubListToggle(
-                  academicSubList,
-                  setAcademicSubList,
-                  setStudentSubList,
-                  setTeacherSubList,
-                  setFeeSubList,
-                  setExamSubList,
-                  setTimeTableSubList
-                )
-              }
-            >
-              <Link className="menu-link">
+            <li className="menu-item">
+              <div
+                className="menu-link"
+                onClick={() =>
+                  handleSubListToggle(
+                    academicSubList,
+                    setAcademicSubList,
+                    setStudentSubList,
+                    setTeacherSubList,
+                    setFeeSubList,
+                    setExamSubList,
+                    setTimeTableSubList
+                  )
+                }
+              >
                 <span className="menu-link-icon">
                   <MdOutlineBarChart size={20} />
                 </span>
@@ -205,138 +175,96 @@ const Sidebar = () => {
                     <IoChevronBackOutline size={20} />
                   )}
                 </span>
-              </Link>
+              </div>
+              {academicSubList && (
+                <>
+                  <li className="menu-item text-hide">
+                    <NavLink
+                      to="/sections"
+                      activeClassName="active"
+                      className="menu-link"
+                    >
+                      <span className="menu-link-text sub-list">Section</span>
+                    </NavLink>
+                  </li>
+                  <li className="menu-item text-hide">
+                    <NavLink
+                      to="/streams"
+                      activeClassName="active"
+                      className="menu-link"
+                    >
+                      <span className="menu-link-text sub-list">Stream</span>
+                    </NavLink>
+                  </li>
+                  <li className="menu-item text-hide">
+                    <NavLink
+                      to="/subjects"
+                      activeClassName="active"
+                      className="menu-link"
+                    >
+                      <span className="menu-link-text sub-list">Subjects</span>
+                    </NavLink>
+                  </li>
+                  <li className="menu-item text-hide">
+                    <NavLink
+                      to="/class"
+                      activeClassName="active"
+                      className="menu-link"
+                    >
+                      <span className="menu-link-text sub-list">Class</span>
+                    </NavLink>
+                  </li>
+                  <li className="menu-item text-hide">
+                    <NavLink
+                      to="/assignclasssubjects"
+                      activeClassName="active"
+                      className="menu-link"
+                    >
+                      <span className="menu-link-text sub-list">
+                        Assign Class Subjects
+                      </span>
+                    </NavLink>
+                  </li>
+                  <li className="menu-item text-hide">
+                    <NavLink
+                      to="/assignclassteacher"
+                      activeClassName="active"
+                      className="menu-link"
+                    >
+                      <span className="menu-link-text sub-list">
+                        Assign Class Teacher
+                      </span>
+                    </NavLink>
+                  </li>
+                  <li className="menu-item text-hide">
+                    <NavLink
+                      to="/assignsubjectteacher"
+                      activeClassName="active"
+                      className="menu-link"
+                    >
+                      <span className="menu-link-text sub-list">
+                        Assign Subject Teacher
+                      </span>
+                    </NavLink>
+                  </li>
+                </>
+              )}
             </li>
-            {academicSubList && (
-              <>
-                <li
-                  className="menu-item text-hide"
-                  onClick={() => {
-                    handleTabSelection("Section");
-                  }}
-                >
-                  <Link
-                    to="/sections"
-                    className={`menu-link ${
-                      selectedTab === "Section" && "active"
-                    }`}
-                  >
-                    <span className="menu-link-text sub-list">Section</span>
-                  </Link>
-                </li>
-                <li
-                  className="menu-item text-hide"
-                  onClick={() => {
-                    handleTabSelection("Stream");
-                  }}
-                >
-                  <Link
-                    to="/streams"
-                    className={`menu-link ${
-                      selectedTab === "Stream" && "active"
-                    }`}
-                  >
-                    <span className="menu-link-text sub-list">Stream</span>
-                  </Link>
-                </li>
-                <li
-                  className="menu-item text-hide"
-                  onClick={() => {
-                    handleTabSelection("Subjects");
-                  }}
-                >
-                  <Link
-                    to="/subjects"
-                    className={`menu-link ${
-                      selectedTab === "Subjects" && "active"
-                    }`}
-                  >
-                    <span className="menu-link-text sub-list">Subjects</span>
-                  </Link>
-                </li>
-                <li
-                  className="menu-item text-hide"
-                  onClick={() => {
-                    handleTabSelection("Class");
-                  }}
-                >
-                  <Link
-                    to="/class"
-                    className={`menu-link ${
-                      selectedTab === "Class" && "active"
-                    }`}
-                  >
-                    <span className="menu-link-text sub-list">Class</span>
-                  </Link>
-                </li>
-                <li
-                  className="menu-item text-hide"
-                  onClick={() => {
-                    handleTabSelection("Assign Class Subjects");
-                  }}
-                >
-                  <Link
-                    to="/assignclasssubjects"
-                    className={`menu-link ${
-                      selectedTab === "Assign Class Subjects" && "active"
-                    }`}
-                  >
-                    <span className="menu-link-text sub-list">
-                      Assign Class Subjects
-                    </span>
-                  </Link>
-                </li>
-                <li
-                  className="menu-item text-hide"
-                  onClick={() => {
-                    handleTabSelection("Assign Class Teacher");
-                  }}
-                >
-                  <Link
-                    to="/assignclassteacher"
-                    className={`menu-link ${
-                      selectedTab === "Assign Class Teacher" && "active"
-                    }`}
-                  >
-                    <span className="menu-link-text sub-list">
-                      Assign Class Teacher
-                    </span>
-                  </Link>
-                </li>
-                <li
-                  className="menu-item text-hide"
-                  onClick={() => {
-                    handleTabSelection("Assign Subject Teacher");
-                  }}
-                >
-                  <Link
-                    to="/assignsubjectteacher"
-                    className={`menu-link ${
-                      selectedTab === "Assign Subject Teacher" && "active"
-                    }`}
-                  >
-                    <span className="menu-link-text sub-list">
-                      Assign Subject Teacher
-                    </span>
-                  </Link>
-                </li>
-              </>
-            )}
-            <li
-              className="menu-item"
-              onClick={() =>
-                handleSubListToggle(
-                  studentSubList,
-                  setStudentSubList,
-                  setAcademicSubList,
-                  setTeacherSubList,
-                  setFeeSubList,
-                  setExamSubList,
-                  setTimeTableSubList
-                )
-              }
-            >
-              <Link to="/" className="menu-link">
+            <li className="menu-item">
+              <div
+                className="menu-link"
+                onClick={() =>
+                  handleSubListToggle(
+                    studentSubList,
+                    setStudentSubList,
+                    setAcademicSubList,
+                    setTeacherSubList,
+                    setFeeSubList,
+                    setExamSubList,
+                    setTimeTableSubList
+                  )
+                }
+              >
                 <span className="menu-link-icon">
                   <PiStudent size={20} />
                 </span>
@@ -348,48 +276,60 @@ const Sidebar = () => {
                     <IoChevronBackOutline size={20} />
                   )}
                 </span>
-              </Link>
+              </div>
+              {studentSubList && (
+                <>
+                  <li className="menu-item text-hide">
+                    <NavLink
+                      to="/studentsadmission"
+                      activeClassName="active"
+                      className="menu-link"
+                    >
+                      <span className="menu-link-text sub-list">
+                        Students Admission
+                      </span>
+                    </NavLink>
+                  </li>
+                  <li className="menu-item text-hide">
+                    <NavLink
+                      to="/studentdetails"
+                      activeClassName="active"
+                      className="menu-link"
+                    >
+                      <span className="menu-link-text sub-list">
+                        Student Details
+                      </span>
+                    </NavLink>
+                  </li>
+                  <li className="menu-item text-hide">
+                    <NavLink
+                      to="/addbulkdata"
+                      activeClassName="active"
+                      className="menu-link"
+                    >
+                      <span className="menu-link-text sub-list">
+                        Add Bulk Data
+                      </span>
+                    </NavLink>
+                  </li>
+                </>
+              )}
             </li>
-            {studentSubList && (
-              <>
-                <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
-                    <span className="menu-link-text sub-list">
-                      Students Admission
-                    </span>
-                  </Link>
-                </li>
-                <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
-                    <span className="menu-link-text sub-list">
-                      Student Details
-                    </span>
-                  </Link>
-                </li>
-                <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
-                    <span className="menu-link-text sub-list">
-                      Add Bulk Data
-                    </span>
-                  </Link>
-                </li>
-              </>
-            )}
-            <li
-              className="menu-item"
-              onClick={() =>
-                handleSubListToggle(
-                  teacherSubList,
-                  setTeacherSubList,
-                  setAcademicSubList,
-                  setStudentSubList,
-                  setFeeSubList,
-                  setExamSubList,
-                  setTimeTableSubList
-                )
-              }
-            >
-              <Link to="/" className="menu-link">
+            <li className="menu-item">
+              <div
+                className="menu-link"
+                onClick={() =>
+                  handleSubListToggle(
+                    teacherSubList,
+                    setTeacherSubList,
+                    setStudentSubList,
+                    setAcademicSubList,
+                    setFeeSubList,
+                    setExamSubList,
+                    setTimeTableSubList
+                  )
+                }
+              >
                 <span className="menu-link-icon">
                   <PiChalkboardTeacher size={18} />
                 </span>
@@ -401,41 +341,49 @@ const Sidebar = () => {
                     <IoChevronBackOutline size={20} />
                   )}
                 </span>
-              </Link>
+              </div>
             </li>
             {teacherSubList && (
               <>
                 <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
+                  <NavLink
+                    to="/addnewteacher"
+                    activeClassName="active"
+                    className="menu-link"
+                  >
                     <span className="menu-link-text sub-list">
                       Add New Teacher
                     </span>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
+                  <NavLink
+                    to="/teacherdetail"
+                    activeClassName="active"
+                    className="menu-link"
+                  >
                     <span className="menu-link-text sub-list">
                       Teacher Details
                     </span>
-                  </Link>
+                  </NavLink>
                 </li>
               </>
             )}
-            <li
-              className="menu-item"
-              onClick={() =>
-                handleSubListToggle(
-                  timeTableSubList,
-                  setTimeTableSubList,
-                  setAcademicSubList,
-                  setStudentSubList,
-                  setTeacherSubList,
-                  setFeeSubList,
-                  setExamSubList
-                )
-              }
-            >
-              <Link to="/" className="menu-link">
+            <li className="menu-item">
+              <div
+                className="menu-link"
+                onClick={() =>
+                  handleSubListToggle(
+                    timeTableSubList,
+                    setTimeTableSubList,
+                    setAcademicSubList,
+                    setStudentSubList,
+                    setTeacherSubList,
+                    setFeeSubList,
+                    setExamSubList
+                  )
+                }
+              >
                 <span className="menu-link-icon">
                   <IoCalendarOutline size={20} />
                 </span>
@@ -447,48 +395,60 @@ const Sidebar = () => {
                     <IoChevronBackOutline size={20} />
                   )}
                 </span>
-              </Link>
+              </div>
             </li>
             {timeTableSubList && (
               <>
                 <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
+                  <NavLink
+                    to="/createtimetable"
+                    activeClassName="active"
+                    className="menu-link"
+                  >
                     <span className="menu-link-text sub-list">
                       Create Timetable
                     </span>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
+                  <NavLink
+                    to="/classtimetable"
+                    activeClassName="active"
+                    className="menu-link"
+                  >
                     <span className="menu-link-text sub-list">
                       Class Timetable
                     </span>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
+                  <NavLink
+                    to="/teachertimetable"
+                    activeClassName="active"
+                    className="menu-link"
+                  >
                     <span className="menu-link-text sub-list">
                       Teacher Timetable
                     </span>
-                  </Link>
+                  </NavLink>
                 </li>
               </>
             )}
-            <li
-              className="menu-item"
-              onClick={() =>
-                handleSubListToggle(
-                  feeSubList,
-                  setFeeSubList,
-                  setStudentSubList,
-                  setTeacherSubList,
-                  setExamSubList,
-                  setTimeTableSubList,
-                  setAcademicSubList
-                )
-              }
-            >
-              <Link to="/" className="menu-link">
+            <li className="menu-item">
+              <div
+                className="menu-link"
+                onClick={() =>
+                  handleSubListToggle(
+                    feeSubList,
+                    setFeeSubList,
+                    setStudentSubList,
+                    setTeacherSubList,
+                    setExamSubList,
+                    setTimeTableSubList,
+                    setAcademicSubList
+                  )
+                }
+              >
                 <span className="menu-link-icon">
                   <MdOutlineCurrencyExchange size={20} />
                 </span>
@@ -500,51 +460,67 @@ const Sidebar = () => {
                     <IoChevronBackOutline size={20} />
                   )}
                 </span>
-              </Link>
+              </div>
             </li>
             {feeSubList && (
               <>
                 <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
+                  <NavLink
+                    to="/feestype"
+                    activeClassName="active"
+                    className="menu-link"
+                  >
                     <span className="menu-link-text sub-list">Fees type</span>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
+                  <NavLink
+                    to="/assignfeesclasses"
+                    activeClassName="active"
+                    className="menu-link"
+                  >
                     <span className="menu-link-text sub-list">
                       Assign Fees Classes
                     </span>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
+                  <NavLink
+                    to="/feespaid"
+                    activeClassName="active"
+                    className="menu-link"
+                  >
                     <span className="menu-link-text sub-list">Fees Paid</span>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
+                  <NavLink
+                    to="/feestransactionlogs"
+                    activeClassName="active"
+                    className="menu-link"
+                  >
                     <span className="menu-link-text sub-list">
                       Fees Transaction Logs
                     </span>
-                  </Link>
+                  </NavLink>
                 </li>
               </>
             )}
-            <li
-              className="menu-item"
-              onClick={() =>
-                handleSubListToggle(
-                  examSubList,
-                  setExamSubList,
-                  setAcademicSubList,
-                  setStudentSubList,
-                  setTeacherSubList,
-                  setFeeSubList,
-                  setTimeTableSubList
-                )
-              }
-            >
-              <Link to="/" className="menu-link">
+            <li className="menu-item">
+              <div
+                className="menu-link"
+                onClick={() =>
+                  handleSubListToggle(
+                    examSubList,
+                    setExamSubList,
+                    setAcademicSubList,
+                    setStudentSubList,
+                    setTeacherSubList,
+                    setFeeSubList,
+                    setTimeTableSubList
+                  )
+                }
+              >
                 <span className="menu-link-icon">
                   <PiExam size={18} />
                 </span>
@@ -556,21 +532,29 @@ const Sidebar = () => {
                     <IoChevronBackOutline size={20} />
                   )}
                 </span>
-              </Link>
+              </div>
             </li>
             {examSubList && (
               <>
                 <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
+                  <NavLink
+                    to="/createexam"
+                    activeClassName="active"
+                    className="menu-link"
+                  >
                     <span className="menu-link-text sub-list">Create Exam</span>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
+                  <NavLink
+                    to="/createexamtimetable"
+                    activeClassName="active"
+                    className="menu-link"
+                  >
                     <span className="menu-link-text sub-list">
                       Create Exam Timetable
                     </span>
-                  </Link>
+                  </NavLink>
                 </li>
               </>
             )}
@@ -589,12 +573,16 @@ const Sidebar = () => {
                 )
               }
             >
-              <Link to="/" className="menu-link">
+              <NavLink
+                to="/announcements"
+                activeClassName="active"
+                className="menu-link"
+              >
                 <span className="menu-link-icon">
                   <TfiAnnouncement size={20} />
                 </span>
                 <span className="menu-link-text">Announcements</span>
-              </Link>
+              </NavLink>
             </li>
           </ul>
         </div>
@@ -602,20 +590,28 @@ const Sidebar = () => {
         <div className="sidebar-menu sidebar-menu2">
           <ul className="menu-list">
             <li className="menu-item">
-              <Link to="/" className="menu-link">
+              <NavLink
+                to="/settings"
+                activeClassName="active"
+                className="menu-link"
+              >
                 <span className="menu-link-icon">
                   <MdOutlineSettings size={20} />
                 </span>
                 <span className="menu-link-text">Settings</span>
-              </Link>
+              </NavLink>
             </li>
             <li className="menu-item">
-              <Link to="/" className="menu-link">
+              <NavLink
+                to="/logout"
+                activeClassName="active"
+                className="menu-link"
+              >
                 <span className="menu-link-icon">
                   <MdOutlineLogout size={20} />
                 </span>
                 <span className="menu-link-text">Logout</span>
-              </Link>
+              </NavLink>
             </li>
           </ul>
         </div>
