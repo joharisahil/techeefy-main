@@ -36,6 +36,8 @@ const Sidebar = () => {
   const [timeTableSubList, setTimeTableSubList] = useState(false);
   const [feeSubList, setFeeSubList] = useState(false);
   const [examSubList, setExamSubList] = useState(false);
+  const [dashboard, setDashboard] = useState(false);
+  const [selectedState, setSelectedState] = useState("dashboard");
 
   // closing the navbar when clicked outside the sidebar area
   const handleClickOutside = (event) => {
@@ -82,7 +84,21 @@ const Sidebar = () => {
       <div className="sidebar-body">
         <div className="sidebar-menu">
           <ul className="menu-list">
-            <li className="menu-item">
+            <li
+              className="menu-item"
+              onClick={() =>
+                handleSubListToggle(
+                  dashboard,
+                  setDashboard,
+                  setAcademicSubList,
+                  setStudentSubList,
+                  setTeacherSubList,
+                  setFeeSubList,
+                  setExamSubList,
+                  setTimeTableSubList
+                )
+              }
+            >
               <Link to="/" className="menu-link active">
                 <span className="menu-link-icon">
                   <MdOutlineGridView size={18} />
@@ -121,7 +137,7 @@ const Sidebar = () => {
             {academicSubList && (
               <>
                 <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
+                  <Link to="/sections" className="menu-link">
                     <span className="menu-link-text sub-list">Section</span>
                   </Link>
                 </li>
