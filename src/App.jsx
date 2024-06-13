@@ -8,6 +8,12 @@ import SunIcon from "./assets/icons/sun.svg";
 import BaseLayout from "./layout/BaseLayout";
 import { Dashboard, PageNotFound } from "./screens";
 import Section from "./screens/academics/SectionScreen";
+import Stream from "./screens/academics/StreamScreen";
+import Subject from "./screens/academics/SubjectScreen";
+import Class from "./screens/academics/ClassScreen";
+import AssignClassSubject from "./screens/academics/AssignClassSubjectScreen";
+import AssignClassTeacher from "./screens/academics/AssignClassTeacherScreen";
+import AssignTeacherSubject from "./screens/academics/AssignSubjectTeacherScreen";
 
 function App() {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -28,6 +34,22 @@ function App() {
           <Route element={<BaseLayout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/sections" element={<Section />} />
+            <Route path="/streams" element={<Stream />} />
+            <Route path="/subjects" element={<Subject />} />
+            <Route path="/class" element={<Class />} />
+            <Route
+              path="/assignclasssubjects"
+              element={<AssignClassSubject />}
+            />
+            <Route
+              path="/assignclassteacher"
+              element={<AssignClassTeacher />}
+            />
+            <Route
+              path="/assignsubjectteacher"
+              element={<AssignTeacherSubject />}
+            />
+
             <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>

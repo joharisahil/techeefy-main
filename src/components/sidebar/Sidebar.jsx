@@ -158,37 +158,47 @@ const Sidebar = () => {
                     <span className="menu-link-text sub-list">Section</span>
                   </Link>
                 </li>
-                <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
+                <li
+                  className="menu-item text-hide"
+                  onClick={() => {
+                    setSelectedTab("Stream");
+                  }}
+                >
+                  <Link
+                    to="/streams"
+                    className={`menu-link ${
+                      selectedTab === "Stream" && "active"
+                    }`}
+                  >
                     <span className="menu-link-text sub-list">Stream</span>
                   </Link>
                 </li>
                 <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
+                  <Link to="/subjects" className="menu-link">
                     <span className="menu-link-text sub-list">Subjects</span>
                   </Link>
                 </li>
                 <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
+                  <Link to="/class" className="menu-link">
                     <span className="menu-link-text sub-list">Class</span>
                   </Link>
                 </li>
                 <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
+                  <Link to="/assignclasssubjects" className="menu-link">
                     <span className="menu-link-text sub-list">
                       Assign Class Subjects
                     </span>
                   </Link>
                 </li>
                 <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
+                  <Link to="/assignclassteacher" className="menu-link">
                     <span className="menu-link-text sub-list">
                       Assign Class Teacher
                     </span>
                   </Link>
                 </li>
                 <li className="menu-item text-hide">
-                  <Link to="/" className="menu-link">
+                  <Link to="/assignsubjectteacher" className="menu-link">
                     <span className="menu-link-text sub-list">
                       Assign Subject Teacher
                     </span>
