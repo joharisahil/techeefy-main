@@ -5,9 +5,9 @@ const Section = () => {
     title: "Section",
   };
   return (
-    <>
+    <div className="content-area">
       <AreaTop handleTitle={handleTitle} />
-    </>
+    </div>
   );
 };
 
