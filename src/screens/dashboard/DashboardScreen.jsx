@@ -8,8 +8,8 @@ const Dashboard = () => {
     <div className="content-area">
       <AreaTop handleTitle={handleTitle} />
       <AreaCards />
-      {/* <AreaCharts />
-      <AreaTable /> */}
+      <AreaCharts />
+      <AreaTable />
     </div>
   );
 };
