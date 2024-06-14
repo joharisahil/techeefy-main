@@ -7,7 +7,7 @@ import "react-date-range/dist/theme/default.css"; // theme css file
 import { addDays } from "date-fns";
 import { DateRange } from "react-date-range";
 
-const AreaTop = () => {
+const AreaTop = ({ handleTitle }) => {
   const { openSidebar } = useContext(SidebarContext);
 
   const [state, setState] = useState([
@@ -48,7 +48,7 @@ const AreaTop = () => {
         >
           <MdOutlineMenu size={24} />
         </button>
-        <h2 className="area-top-title">Dashboard</h2>
+        <h2 className="area-top-title">{handleTitle.title}</h2>
       </div>
       <div className="area-top-r">
         <div

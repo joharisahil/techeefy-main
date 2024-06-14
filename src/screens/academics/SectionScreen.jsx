@@ -1,5 +1,14 @@
+import { AreaTop } from "../../components";
+
 const Section = () => {
-  return <div>Section Screen</div>;
+  const handleTitle = {
+    title: "Section",
+  };
+  return (
+    <>
+      <AreaTop handleTitle={handleTitle} />
+    </>
+  );
 };
 
 export default Section;
