@@ -168,7 +168,7 @@ const Sidebar = () => {
             <li className="menu-item">
               <div
                 className="menu-link"
-                onClick={() => {
+                onClick={() =>
                   handleSubListToggle(
                     academicSubList,
                     setAcademicSubList,
@@ -177,9 +177,8 @@ const Sidebar = () => {
                     setFeeSubList,
                     setExamSubList,
                     setTimeTableSubList
-                  );
-                  console.log(academicSubList);
-                }}
+                  )
+                }
               >
                 <span className="menu-link-icon">
                   <MdOutlineBarChart size={20} />
