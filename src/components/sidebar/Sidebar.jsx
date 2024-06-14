@@ -1,4 +1,10 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import {
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  useLayoutEffect,
+} from "react";
 import { NavLink } from "react-router-dom";
 import { ThemeContext } from "../../context/ThemeContext";
 import { SidebarContext } from "../../context/SidebarContext";
@@ -57,8 +63,9 @@ const Sidebar = () => {
     };
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const path = location.pathname;
+
     if (
       path.startsWith("/sections") ||
       path.startsWith("/streams") ||
@@ -71,29 +78,43 @@ const Sidebar = () => {
       setAcademicSubList(true);
     }
     if (
-      path.startsWith("/students") ||
       path.startsWith("/studentsadmission") ||
       path.startsWith("/studentdetail") ||
       path.startsWith("/addbulkdata")
     ) {
       setStudentSubList(true);
     }
-    if (path.startsWith("/teachers")) {
+    if (
+      path.startsWith("/addnewteacher") ||
+      path.startsWith("/teacherdetails")
+    ) {
       setTeacherSubList(true);
     }
-    if (path.startsWith("/timetable")) {
+    if (
+      path.startsWith("/createtimetable") ||
+      path.startsWith("/classtimetable") ||
+      path.startsWith("/teachertimetable")
+    ) {
       setTimeTableSubList(true);
     }
-    if (path.startsWith("/fees")) {
+    if (
+      path.startsWith("/feestype") ||
+      path.startsWith("/assignfeesclasses") ||
+      path.startsWith("/feespaid") ||
+      path.startsWith("/feestransactionlogs")
+    ) {
       setFeeSubList(true);
     }
-    if (path.startsWith("/exams")) {
+    if (
+      path.startsWith("/createexam") ||
+      path.startsWith("/createexamtimetable")
+    ) {
       setExamSubList(true);
     }
     if (path.startsWith("/announcements")) {
       setAnnouncement(true);
     }
-  }, [location.pathname]);
+  }, []);
 
   // closing other fields when clicked on a field
   const handleSubListToggle = (
@@ -137,12 +158,7 @@ const Sidebar = () => {
                 )
               }
             >
-              <NavLink
-                exact
-                to="/"
-                activeClassName="active"
-                className="menu-link"
-              >
+              <NavLink to="/" activeclassname="active" className="menu-link">
                 <span className="menu-link-icon">
                   <MdOutlineGridView size={18} />
                 </span>
@@ -152,7 +168,7 @@ const Sidebar = () => {
             <li className="menu-item">
               <div
                 className="menu-link"
-                onClick={() =>
+                onClick={() => {
                   handleSubListToggle(
                     academicSubList,
                     setAcademicSubList,
@@ -161,8 +177,9 @@ const Sidebar = () => {
                     setFeeSubList,
                     setExamSubList,
                     setTimeTableSubList
-                  )
-                }
+                  );
+                  console.log(academicSubList);
+                }}
               >
                 <span className="menu-link-icon">
                   <MdOutlineBarChart size={20} />
@@ -177,11 +194,11 @@ const Sidebar = () => {
                 </span>
               </div>
               {academicSubList && (
-                <>
+                <ul>
                   <li className="menu-item text-hide">
                     <NavLink
                       to="/sections"
-                      activeClassName="active"
+                      activeclassname="active"
                       className="menu-link"
                     >
                       <span className="menu-link-text sub-list">Section</span>
@@ -190,7 +207,7 @@ const Sidebar = () => {
                   <li className="menu-item text-hide">
                     <NavLink
                       to="/streams"
-                      activeClassName="active"
+                      activeclassname="active"
                       className="menu-link"
                     >
                       <span className="menu-link-text sub-list">Stream</span>
@@ -199,7 +216,7 @@ const Sidebar = () => {
                   <li className="menu-item text-hide">
                     <NavLink
                       to="/subjects"
-                      activeClassName="active"
+                      activeclassname="active"
                       className="menu-link"
                     >
                       <span className="menu-link-text sub-list">Subjects</span>
@@ -208,7 +225,7 @@ const Sidebar = () => {
                   <li className="menu-item text-hide">
                     <NavLink
                       to="/class"
-                      activeClassName="active"
+                      activeclassname="active"
                       className="menu-link"
                     >
                       <span className="menu-link-text sub-list">Class</span>
@@ -217,7 +234,7 @@ const Sidebar = () => {
                   <li className="menu-item text-hide">
                     <NavLink
                       to="/assignclasssubjects"
-                      activeClassName="active"
+                      activeclassname="active"
                       className="menu-link"
                     >
                       <span className="menu-link-text sub-list">
@@ -228,7 +245,7 @@ const Sidebar = () => {
                   <li className="menu-item text-hide">
                     <NavLink
                       to="/assignclassteacher"
-                      activeClassName="active"
+                      activeclassname="active"
                       className="menu-link"
                     >
                       <span className="menu-link-text sub-list">
@@ -239,7 +256,7 @@ const Sidebar = () => {
                   <li className="menu-item text-hide">
                     <NavLink
                       to="/assignsubjectteacher"
-                      activeClassName="active"
+                      activeclassname="active"
                       className="menu-link"
                     >
                       <span className="menu-link-text sub-list">
@@ -247,7 +264,7 @@ const Sidebar = () => {
                       </span>
                     </NavLink>
                   </li>
-                </>
+                </ul>
               )}
             </li>
             <li className="menu-item">
@@ -278,11 +295,11 @@ const Sidebar = () => {
                 </span>
               </div>
               {studentSubList && (
-                <>
+                <ul>
                   <li className="menu-item text-hide">
                     <NavLink
                       to="/studentsadmission"
-                      activeClassName="active"
+                      activeclassname="active"
                       className="menu-link"
                     >
                       <span className="menu-link-text sub-list">
@@ -293,7 +310,7 @@ const Sidebar = () => {
                   <li className="menu-item text-hide">
                     <NavLink
                       to="/studentdetails"
-                      activeClassName="active"
+                      activeclassname="active"
                       className="menu-link"
                     >
                       <span className="menu-link-text sub-list">
@@ -304,7 +321,7 @@ const Sidebar = () => {
                   <li className="menu-item text-hide">
                     <NavLink
                       to="/addbulkdata"
-                      activeClassName="active"
+                      activeclassname="active"
                       className="menu-link"
                     >
                       <span className="menu-link-text sub-list">
@@ -312,7 +329,7 @@ const Sidebar = () => {
                       </span>
                     </NavLink>
                   </li>
-                </>
+                </ul>
               )}
             </li>
             <li className="menu-item">
@@ -344,11 +361,11 @@ const Sidebar = () => {
               </div>
             </li>
             {teacherSubList && (
-              <>
+              <ul>
                 <li className="menu-item text-hide">
                   <NavLink
                     to="/addnewteacher"
-                    activeClassName="active"
+                    activeclassname="active"
                     className="menu-link"
                   >
                     <span className="menu-link-text sub-list">
@@ -359,7 +376,7 @@ const Sidebar = () => {
                 <li className="menu-item text-hide">
                   <NavLink
                     to="/teacherdetail"
-                    activeClassName="active"
+                    activeclassname="active"
                     className="menu-link"
                   >
                     <span className="menu-link-text sub-list">
@@ -367,7 +384,7 @@ const Sidebar = () => {
                     </span>
                   </NavLink>
                 </li>
-              </>
+              </ul>
             )}
             <li className="menu-item">
               <div
@@ -398,11 +415,11 @@ const Sidebar = () => {
               </div>
             </li>
             {timeTableSubList && (
-              <>
+              <ul>
                 <li className="menu-item text-hide">
                   <NavLink
                     to="/createtimetable"
-                    activeClassName="active"
+                    activeclassname="active"
                     className="menu-link"
                   >
                     <span className="menu-link-text sub-list">
@@ -413,7 +430,7 @@ const Sidebar = () => {
                 <li className="menu-item text-hide">
                   <NavLink
                     to="/classtimetable"
-                    activeClassName="active"
+                    activeclassname="active"
                     className="menu-link"
                   >
                     <span className="menu-link-text sub-list">
@@ -424,7 +441,7 @@ const Sidebar = () => {
                 <li className="menu-item text-hide">
                   <NavLink
                     to="/teachertimetable"
-                    activeClassName="active"
+                    activeclassname="active"
                     className="menu-link"
                   >
                     <span className="menu-link-text sub-list">
@@ -432,7 +449,7 @@ const Sidebar = () => {
                     </span>
                   </NavLink>
                 </li>
-              </>
+              </ul>
             )}
             <li className="menu-item">
               <div
@@ -463,11 +480,11 @@ const Sidebar = () => {
               </div>
             </li>
             {feeSubList && (
-              <>
+              <ul>
                 <li className="menu-item text-hide">
                   <NavLink
                     to="/feestype"
-                    activeClassName="active"
+                    activeclassname="active"
                     className="menu-link"
                   >
                     <span className="menu-link-text sub-list">Fees type</span>
@@ -476,7 +493,7 @@ const Sidebar = () => {
                 <li className="menu-item text-hide">
                   <NavLink
                     to="/assignfeesclasses"
-                    activeClassName="active"
+                    activeclassname="active"
                     className="menu-link"
                   >
                     <span className="menu-link-text sub-list">
@@ -487,7 +504,7 @@ const Sidebar = () => {
                 <li className="menu-item text-hide">
                   <NavLink
                     to="/feespaid"
-                    activeClassName="active"
+                    activeclassname="active"
                     className="menu-link"
                   >
                     <span className="menu-link-text sub-list">Fees Paid</span>
@@ -496,7 +513,7 @@ const Sidebar = () => {
                 <li className="menu-item text-hide">
                   <NavLink
                     to="/feestransactionlogs"
-                    activeClassName="active"
+                    activeclassname="active"
                     className="menu-link"
                   >
                     <span className="menu-link-text sub-list">
@@ -504,7 +521,7 @@ const Sidebar = () => {
                     </span>
                   </NavLink>
                 </li>
-              </>
+              </ul>
             )}
             <li className="menu-item">
               <div
@@ -535,11 +552,11 @@ const Sidebar = () => {
               </div>
             </li>
             {examSubList && (
-              <>
+              <ul>
                 <li className="menu-item text-hide">
                   <NavLink
                     to="/createexam"
-                    activeClassName="active"
+                    activeclassname="active"
                     className="menu-link"
                   >
                     <span className="menu-link-text sub-list">Create Exam</span>
@@ -548,7 +565,7 @@ const Sidebar = () => {
                 <li className="menu-item text-hide">
                   <NavLink
                     to="/createexamtimetable"
-                    activeClassName="active"
+                    activeclassname="active"
                     className="menu-link"
                   >
                     <span className="menu-link-text sub-list">
@@ -556,7 +573,7 @@ const Sidebar = () => {
                     </span>
                   </NavLink>
                 </li>
-              </>
+              </ul>
             )}
             <li
               className="menu-item"
@@ -575,7 +592,7 @@ const Sidebar = () => {
             >
               <NavLink
                 to="/announcements"
-                activeClassName="active"
+                activeclassname="active"
                 className="menu-link"
               >
                 <span className="menu-link-icon">
@@ -592,7 +609,7 @@ const Sidebar = () => {
             <li className="menu-item">
               <NavLink
                 to="/settings"
-                activeClassName="active"
+                activeclassname="active"
                 className="menu-link"
               >
                 <span className="menu-link-icon">
@@ -604,7 +621,7 @@ const Sidebar = () => {
             <li className="menu-item">
               <NavLink
                 to="/logout"
-                activeClassName="active"
+                activeclassname="active"
                 className="menu-link"
               >
                 <span className="menu-link-icon">
