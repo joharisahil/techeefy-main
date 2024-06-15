@@ -1,6 +1,6 @@
 const SectionForm = () => {
   return (
-    <div className="section-form">
+    <form className="section-form">
       <div className="form-top-title">Create Section</div>
       <div className="form-area">
         <div className="form-second-title">Name</div>
@@ -9,7 +9,7 @@ const SectionForm = () => {
         </div>
       </div>
       <button className="submit-btn">Submit</button>
-    </div>
+    </form>
   );
 };
 

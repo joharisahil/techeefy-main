@@ -1,0 +1,27 @@
+// BaseLayout.scss
+.page-wrapper {
+    display: flex;
+  }
+  
+  .content-wrapper {
+    flex: 1;
+    padding: 1rem;
+    position: relative;
+  
+    .theme-toggle-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+  
+      .theme-icon {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+  
