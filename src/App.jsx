@@ -1,4 +1,3 @@
-// App.jsx
 import React, { useContext, useEffect } from "react";
 import {
   createBrowserRouter,
