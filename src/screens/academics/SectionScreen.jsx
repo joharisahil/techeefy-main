@@ -1,7 +1,8 @@
 import { AreaTop } from "../../components";
 import SectionForm from "../../components/section/sectionForm/SectionForm";
 import SectionTable from "../../components/section/sectionTable/SectionTable";
-import "../../components/section/sectionForm//SectionForm.scss";
+import "../../components/section/sectionForm/SectionForm.scss";
+import "../../components/section/sectionTable/SectionTable.scss";
 
 const Section = () => {
   const handleTitle = {

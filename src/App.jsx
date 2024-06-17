@@ -17,6 +17,10 @@ import Class from "./screens/academics/ClassScreen";
 import AssignClassSubject from "./screens/academics/AssignClassSubjectScreen";
 import AssignClassTeacher from "./screens/academics/AssignClassTeacherScreen";
 import AssignTeacherSubject from "./screens/academics/AssignSubjectTeacherScreen";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
+import "primeflex/primeflex.css";
+//import "primereact/resources/themes/saga-blue/theme.css"; // or any other theme
 
 const router = createBrowserRouter(
   createRoutesFromElements(
