@@ -1,37 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
+import { Button } from "primereact/button";
+import { MdDeleteOutline } from "react-icons/md";
 //import "primereact/resources/themes/arya-purple/theme.css"; // or any other theme
 
-const SectionTable = () => {
-  const [products, setProducts] = useState(null);
+const SectionTable = ({
+  products,
+  setProducts,
+  updateSection,
+  deleteSection,
+}) => {
+  const onRowEditComplete = async (e) => {
+    const { newData, index } = e;
+    const { section_id, section } = newData;
 
-  useEffect(() => {
-    fetch("http://localhost:3000/section/get-sections")
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.dataFound) {
-          const formattedData = data.sections.map((item, index) => ({
-            ...item,
-            serialNumber: index + 1,
-            section: item.section_name,
-          }));
-          setProducts(formattedData);
-        }
-      });
-  }, []);
-
-  const onRowEditComplete = (e) => {
-    let _products = [...products];
-    let { newData, index } = e;
-
-    _products[index] = newData;
-
-    setProducts(_products);
+    await updateSection(section_id, section, index);
   };
 
   const textEditor = (options) => {
@@ -51,6 +39,16 @@ const SectionTable = () => {
     );
   };
 
+  const actionBodyTemplate = (rowData) => {
+    return (
+      <Button
+        icon={<MdDeleteOutline size={20} />}
+        style={{ margin: "9px", color: "var(--text-color-inverted)" }}
+        onClick={() => deleteSection(rowData.section_id)}
+      />
+    );
+  };
+
   return (
     <div className="section-form">
       <div className="form-top-title" style={{ marginBottom: "22px" }}>
@@ -59,7 +57,6 @@ const SectionTable = () => {
       <DataTable
         value={products}
         editMode="row"
-        dataKey="section_id"
         onRowEditComplete={onRowEditComplete}
         tableStyle={{ minWidth: "50rem" }}
         className="p-datatable-gridlines section-table"
@@ -77,9 +74,13 @@ const SectionTable = () => {
         ></Column>
         <Column
           rowEditor
-          header="Action"
+          header="Edit"
           style={{ width: "10%", minWidth: "2rem" }}
-          //bodyStyle={{ textAlign: "center" }}
+        ></Column>
+        <Column
+          body={actionBodyTemplate}
+          header="Delete"
+          style={{ width: "10%", minWidth: "8rem" }}
         ></Column>
       </DataTable>
     </div>
