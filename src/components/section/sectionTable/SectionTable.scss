@@ -43,5 +43,13 @@
           .p-row-editor-cancel {
             color: var(--text-color-inverted); // Cancel icon color
           } 
+          .p-paginator{
+           margin-right: 90px;
+           color: var(--text-color-inverted);
+          }
+          .p-component {
+            box-sizing: border-box;
+            color: beige;
+        }
     }  
 }

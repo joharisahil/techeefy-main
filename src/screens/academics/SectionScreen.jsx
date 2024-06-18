@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { AreaTop } from "../../components";
 import SectionForm from "../../components/section/sectionForm/SectionForm";
 import SectionTable from "../../components/section/sectionTable/SectionTable";
@@ -43,28 +45,43 @@ const Section = () => {
 
       if (response.ok) {
         const result = await response.json();
-        // Update products state with the new section added
-        setProducts((prevProducts) => [
-          ...prevProducts,
-          {
-            section_id: result.section_id,
-            serialNumber: prevProducts.length + 1,
-            section: sectionName,
-          },
-        ]);
+        if (result.result.success) {
+          // Update products state with the new section added
+          fetch("http://localhost:3000/section/get-sections")
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("hjbsibfawf", data);
+              setProducts((prevProducts) => [
+                ...prevProducts,
+                {
+                  section_id: result.section_id,
+                  serialNumber: prevProducts.length + 1,
+                  section: sectionName,
+                },
+              ]);
+            });
+          // setProducts((prevProducts) => [
+          //   ...prevProducts,
+          //   {
+          //     section_id: result.section_id,
+          //     serialNumber: prevProducts.length + 1,
+          //     section: sectionName,
+          //   },
+          // ]);
+          toast.success("Section created successfully!");
+        } else {
+          toast.error(result.message || "An error occurred. Please try again.");
+        }
         return { success: true, message: "Section created successfully!" };
       } else {
         const errorData = await response.json();
-        return {
-          success: false,
-          message: errorData.message || "An error occurred. Please try again.",
-        };
+        toast.error(
+          errorData.message || "An error occurred. Please try again."
+        );
       }
     } catch (error) {
-      return {
-        success: false,
-        message: "An error occurred. Please try again.",
-      };
+      console.error("Error:", error);
+      toast.error("An error occurred. Please try again.");
     }
   };
 
@@ -82,14 +99,29 @@ const Section = () => {
       });
 
       if (response.ok) {
-        let updatedProducts = [...products];
-        updatedProducts[index].section = section;
-        setProducts(updatedProducts);
+        const result = await response.json();
+        if (result.result.success) {
+          // Check if sectionExist is false to avoid updating existing values
+          if (!result.result.sectionExist) {
+            let updatedProducts = [...products];
+            updatedProducts[index].section = section;
+            setProducts(updatedProducts);
+            toast.success("Section updated successfully!");
+          } else {
+            toast.error(
+              "Section name already exists. Please choose a different name."
+            );
+          }
+        } else {
+          toast.error(result.message || "Failed to update section.");
+        }
       } else {
-        console.error("Failed to update section.");
+        const errorData = await response.json();
+        toast.error(errorData.message || "Failed to update section.");
       }
     } catch (error) {
       console.error("Error updating section:", error);
+      toast.error("Error updating section. Please try again.");
     }
   };
 
@@ -115,11 +147,13 @@ const Section = () => {
             serialNumber: index + 1,
           }));
         });
+        toast.success("Section deleted successfully!");
       } else {
-        console.error("Failed to delete section.");
+        toast.error("Failed to delete section.");
       }
     } catch (error) {
       console.error("Error deleting section:", error);
+      toast.error("Error deleting section. Please try again.");
     }
   };
 
@@ -130,7 +164,7 @@ const Section = () => {
         <SectionForm addSection={addSection} />
         <SectionTable
           products={products}
-          setProducts={setProducts}
+          addSection={addSection}
           updateSection={updateSection}
           deleteSection={deleteSection}
         />

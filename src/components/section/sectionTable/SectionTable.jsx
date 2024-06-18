@@ -18,6 +18,7 @@ const SectionTable = ({
   const onRowEditComplete = async (e) => {
     const { newData, index } = e;
     const { section_id, section } = newData;
+    console.log("test", section);
 
     await updateSection(section_id, section, index);
   };
@@ -58,6 +59,9 @@ const SectionTable = ({
         value={products}
         editMode="row"
         onRowEditComplete={onRowEditComplete}
+        paginator
+        rows={5}
+        rowsPerPageOptions={[5, 10, 25, 50]}
         tableStyle={{ minWidth: "50rem" }}
         className="p-datatable-gridlines section-table"
       >
@@ -80,7 +84,7 @@ const SectionTable = ({
         <Column
           body={actionBodyTemplate}
           header="Delete"
-          style={{ width: "10%", minWidth: "8rem" }}
+          style={{ width: "10%", minWidth: "2rem" }}
         ></Column>
       </DataTable>
     </div>
