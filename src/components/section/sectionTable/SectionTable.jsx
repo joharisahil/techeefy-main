@@ -18,7 +18,6 @@ const SectionTable = ({
   const onRowEditComplete = async (e) => {
     const { newData, index } = e;
     const { section_id, section } = newData;
-    console.log("test", section);
 
     await updateSection(section_id, section, index);
   };
@@ -61,7 +60,6 @@ const SectionTable = ({
         onRowEditComplete={onRowEditComplete}
         paginator
         rows={5}
-        rowsPerPageOptions={[5, 10, 25, 50]}
         tableStyle={{ minWidth: "50rem" }}
         className="p-datatable-gridlines section-table"
       >
