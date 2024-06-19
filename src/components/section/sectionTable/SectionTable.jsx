@@ -49,6 +49,11 @@ const SectionTable = ({
     );
   };
 
+  // Create a function to generate serial numbers based on the current sorted order
+  const serialNumberBodyTemplate = (rowData, options) => {
+    return options.rowIndex + 1;
+  };
+
   return (
     <div className="section-form">
       <div className="form-top-title" style={{ marginBottom: "22px" }}>
@@ -60,17 +65,20 @@ const SectionTable = ({
         onRowEditComplete={onRowEditComplete}
         paginator
         rows={5}
+        removableSort
         tableStyle={{ minWidth: "50rem" }}
         className="p-datatable-gridlines section-table"
       >
         <Column
           field="serialNumber"
           header="Serial Number"
+          body={serialNumberBodyTemplate}
           style={{ width: "10%", padding: "8px" }}
         ></Column>
         <Column
           field="section"
           header="Name"
+          sortable
           editor={(options) => textEditor(options)}
           style={{ width: "10%", padding: "8px" }}
         ></Column>
@@ -88,5 +96,4 @@ const SectionTable = ({
     </div>
   );
 };
-
 export default SectionTable;
