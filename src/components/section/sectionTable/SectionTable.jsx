@@ -140,11 +140,12 @@ const SectionTable = ({
             //className="p-button-success"
             style={{
               marginRight: "10px",
-              color: "#ffffff",
+              color: "var( --light-color)",
               fontSize: "16px",
               padding: "12px 20px",
               backgroundColor: "var(--primary-color)",
               borderRadius: "8px",
+              fontFamily: "ui-sans-serif",
             }}
           />
           <Button
@@ -152,11 +153,12 @@ const SectionTable = ({
             icon="pi pi-file-pdf"
             onClick={exportToPDF}
             style={{
-              color: "#ffffff",
+              color: "var( --light-color)",
               fontSize: "16px",
               padding: "12px 20px",
               backgroundColor: "var(--primary-color)",
               borderRadius: "8px",
+              fontFamily: "ui-sans-serif",
             }}
             //className="p-button-warning"
           />
