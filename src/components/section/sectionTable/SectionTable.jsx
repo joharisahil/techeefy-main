@@ -7,6 +7,8 @@ import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import { Button } from "primereact/button";
 import { MdDeleteOutline } from "react-icons/md";
+import { useState } from "react";
+import { FilterMatchMode } from "primereact/api";
 //import "primereact/resources/themes/arya-purple/theme.css"; // or any other theme
 
 const SectionTable = ({
@@ -15,6 +17,10 @@ const SectionTable = ({
   updateSection,
   deleteSection,
 }) => {
+  const [filters, setFilters] = useState({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  });
+
   const onRowEditComplete = async (e) => {
     const { newData, index } = e;
     const { section_id, section } = newData;
@@ -59,40 +65,53 @@ const SectionTable = ({
       <div className="form-top-title" style={{ marginBottom: "22px" }}>
         Section List
       </div>
-      <DataTable
-        value={products}
-        editMode="row"
-        onRowEditComplete={onRowEditComplete}
-        paginator
-        rows={5}
-        removableSort
-        tableStyle={{ minWidth: "50rem" }}
-        className="p-datatable-gridlines section-table"
-      >
-        <Column
-          field="serialNumber"
-          header="Serial Number"
-          body={serialNumberBodyTemplate}
-          style={{ width: "10%", padding: "8px" }}
-        ></Column>
-        <Column
-          field="section"
-          header="Name"
-          sortable
-          editor={(options) => textEditor(options)}
-          style={{ width: "10%", padding: "8px" }}
-        ></Column>
-        <Column
-          rowEditor
-          header="Edit"
-          style={{ width: "10%", minWidth: "2rem" }}
-        ></Column>
-        <Column
-          body={actionBodyTemplate}
-          header="Delete"
-          style={{ width: "10%", minWidth: "2rem" }}
-        ></Column>
-      </DataTable>
+      <div>
+        <InputText
+          onInput={(e) => {
+            setFilters({
+              global: {
+                value: e.target.value,
+                matchMode: FilterMatchMode.CONTAINS,
+              },
+            });
+          }}
+        />
+        <DataTable
+          value={products}
+          editMode="row"
+          onRowEditComplete={onRowEditComplete}
+          paginator
+          rows={5}
+          removableSort
+          filters={filters}
+          tableStyle={{ minWidth: "50rem" }}
+          className="p-datatable-gridlines section-table"
+        >
+          <Column
+            field="serialNumber"
+            header="Serial Number"
+            body={serialNumberBodyTemplate}
+            style={{ width: "10%", padding: "8px" }}
+          ></Column>
+          <Column
+            field="section"
+            header="Name"
+            sortable
+            editor={(options) => textEditor(options)}
+            style={{ width: "10%", padding: "8px" }}
+          ></Column>
+          <Column
+            rowEditor
+            header="Edit"
+            style={{ width: "10%", minWidth: "2rem" }}
+          ></Column>
+          <Column
+            body={actionBodyTemplate}
+            header="Delete"
+            style={{ width: "10%", minWidth: "2rem" }}
+          ></Column>
+        </DataTable>
+      </div>
     </div>
   );
 };
