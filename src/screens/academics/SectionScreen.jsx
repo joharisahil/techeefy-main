@@ -46,20 +46,14 @@ const Section = () => {
       if (response.ok) {
         const result = await response.json();
         if (result.result.success) {
-          // Update products state with the new section added
-          fetch("http://localhost:3000/section/get-sections")
-            .then((response) => response.json())
-            .then((data) => {
-              setProducts((prevProducts) => [
-                ...prevProducts,
-                {
-                  section_id:
-                    data.sections[data.sections.length - 1].section_id,
-                  serialNumber: prevProducts.length + 1,
-                  section: data.sections[data.sections.length - 1].section_name,
-                },
-              ]);
-            });
+          setProducts((prevProducts) => [
+            ...prevProducts,
+            {
+              section_id: result.result.section_id,
+              serialNumber: prevProducts.length + 1,
+              section: sectionName,
+            },
+          ]);
           toast.success("Section created successfully!");
         } else {
           toast.error(result.message || "An error occurred. Please try again.");

@@ -1,0 +1,53 @@
+.section-form{
+    background-color: var(--secondary-color);
+    display: flex;
+    align-items: start;
+    border-radius: 5px;
+    padding:  30px;        //20px 16px;
+    justify-content: start;
+    box-shadow: var(--light-shadow1);
+    min-height: 200px;
+    flex-direction: column;
+    width: 100%;
+
+    @media (max-width: 768px) {
+      padding: 12px;
+    }
+
+    
+    .form-top-title {
+        color: var(--text-color-inverted);
+        font-weight: bold;
+      }
+    
+    .section-table{
+        background-color: var(--secondary-color);
+        color: var(--text-color-inverted);
+
+        .p-datatable-thead > tr > th {
+            background-color: var(--thead-bg-color); // Use your variable or a hardcoded value
+            // color: var(--header-text-color); // Use your variable or a hardcoded value
+             padding: 0 10px; // Add padding for spacing
+          }
+
+          .p-row-editor-init {
+            color: var(--text-color-inverted); // Edit icon color
+            margin: 13px;
+          }
+      
+          .p-row-editor-save {
+            color: var(--text-color-inverted); // Save icon color
+            margin: 13px;
+          }
+      
+          .p-row-editor-cancel {
+            color: var(--text-color-inverted); // Cancel icon color
+          } 
+          .p-paginator-page, .p-paginator-next, .p-paginator-last, .p-paginator-first, .p-paginator-prev, .p-paginator-current{
+            color: var(--text-color-inverted);
+            margin-left: 5px;
+            margin-top: 20px;
+          }
+    }  
+
+}
