@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Form } from "react-router-dom";
+import { toast } from "react-toastify"; // Make sure to import toast
 
-const SubjectForm = ({ addStream }) => {
+const SubjectForm = ({ addSubject }) => {
   const [subjectName, setSubjectName] = useState("");
   const [subjectCode, setSubjectCode] = useState("");
   const [type, setType] = useState("");
   const [image, setImage] = useState(null);
   const [fileName, setFileName] = useState("");
+  const [backgroundColor, setBackgroundColor] = useState("#ffff");
 
   const [subjectNameError, setSubjectNameError] = useState("");
   const [typeError, setTypeError] = useState("");
@@ -54,14 +56,14 @@ const SubjectForm = ({ addStream }) => {
     }
 
     const formData = new FormData();
-    formData.append("subjectName", subjectName);
-    formData.append("subjectCode", subjectCode);
-    formData.append("type", type);
-    formData.append("image", image);
+    formData.append("subject_name", subjectName);
+    formData.append("subject_code", subjectCode);
+    formData.append("subject_type", type);
+    formData.append("subject_image", image);
+    formData.append("subject_background_color", backgroundColor);
 
-    const result = await addStream(formData);
-
-    if (result.success) {
+    try {
+      await addSubject(formData);
       setSubjectName(""); // Clear the form
       setSubjectCode("");
       setType("");
@@ -70,8 +72,9 @@ const SubjectForm = ({ addStream }) => {
       setSubjectNameError("");
       setTypeError("");
       setImageError("");
-    } else {
-      setSubjectNameError(result.message);
+    } catch (error) {
+      console.error("Error during form submission:", error);
+      toast.error("An error occurred during form submission.");
     }
   };
 

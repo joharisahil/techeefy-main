@@ -30,42 +30,26 @@ const Subject = () => {
       });
   }, []);
 
-  const addStream = async (streamName) => {
+  const addSubject = async (formData) => {
     try {
-      const response = await fetch("http://localhost:3000/stream/add-stream", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ stream: streamName }),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        if (result.result.success) {
-          // Update products state with the new stream added
-          setProducts((prevProducts) => [
-            ...prevProducts,
-            {
-              stream_id: result.result.streamId,
-              serialNumber: prevProducts.length + 1,
-              stream: streamName,
-            },
-          ]);
-          toast.success("Stream created successfully!");
-        } else {
-          toast.error(result.message || "An error occurred. Please try again.");
+      const response = await fetch(
+        "http://localhost:3000/subject/add-subject",
+        {
+          method: "POST",
+          body: formData,
         }
-        return { success: true, message: "Section created successfully!" };
+      );
+
+      const data = await response.json();
+
+      if (data.result.success) {
+        toast.success("Record Inserted Successfully");
       } else {
-        const errorData = await response.json();
-        toast.error(
-          errorData.message || "An error occurred. Please try again."
-        );
+        toast.error("Record already exists");
       }
     } catch (error) {
-      console.error("Error:", error);
-      toast.error("An error occurred. Please try again.");
+      console.error("Error while adding subject:", error);
+      toast.error("An error occurred while adding the subject.");
     }
   };
 
@@ -145,10 +129,10 @@ const Subject = () => {
     <div className="content-area">
       <AreaTop handleTitle={handleTitle} />
       <section className="content-section-screen">
-        <SubjectForm addStream={addStream} />
+        <SubjectForm addSubject={addSubject} />
         <SubjectTable
           products={products}
-          addStream={addStream}
+          //addStream={addStream}
           updateStream={updateStream}
           deleteStream={deleteStream}
         />
