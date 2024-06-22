@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
@@ -12,11 +12,10 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-//import "primereact/resources/themes/arya-purple/theme.css"; // or any other theme
 
 const SubjectTable = ({
-  products,
-  setProducts,
+  subjects,
+  setSubjects,
   updateStream,
   deleteStream,
 }) => {
@@ -57,42 +56,63 @@ const SubjectTable = ({
     );
   };
 
-  // Create a function to generate serial numbers based on the current sorted order
   const serialNumberBodyTemplate = (rowData, options) => {
     return options.rowIndex + 1;
   };
 
+  const imageBodyTemplate = (rowData) => {
+    const imageUrl = `data:image/jpeg;base64,${rowData.subject_image}`;
+    console.log(`Image for ${rowData.subject_name}:`, rowData.subject_image);
+
+    return (
+      <img
+        src={imageUrl}
+        // alt={rowData.subject_name}
+        // onError={(e) => {
+        //   e.target.src = "path/to/placeholder.jpg"; // Fallback image
+        // }}
+        style={{ width: "30px", height: "30px", objectFit: "cover" }}
+      />
+    );
+  };
+
   const exportToExcel = () => {
-    // Transform the data to include only serial number and section name
-    const exportData = products.map((product, index) => ({
+    const exportData = subjects.map((subject, index) => ({
       SerialNumber: index + 1,
-      StreamName: product.stream,
+      SubjectName: subject.subject_name,
+      SubjectCode: subject.subject_code,
+      SubjectType: subject.subject_type,
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(exportData);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Streams");
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Subjects");
     const excelBuffer = XLSX.write(workbook, {
       bookType: "xlsx",
       type: "array",
     });
     const data = new Blob([excelBuffer], { type: "application/octet-stream" });
-    saveAs(data, "streams.xlsx");
+    saveAs(data, "subjects.xlsx");
   };
 
   const exportToPDF = () => {
     const doc = new jsPDF();
     doc.autoTable({
-      head: [["Serial Number", "Name"]],
-      body: products.map((product, index) => [index + 1, product.stream]),
+      head: [["Serial Number", "Name", "Code", "Type"]],
+      body: subjects.map((subject, index) => [
+        index + 1,
+        subject.subject_name,
+        subject.subject_code,
+        subject.subject_type,
+      ]),
     });
-    doc.save("streams.pdf");
+    doc.save("subjects.pdf");
   };
 
   return (
     <div className="section-form">
       <div className="form-top-title" style={{ marginBottom: "22px" }}>
-        Stream List
+        Subject List
       </div>
       <div
         style={{
@@ -136,10 +156,9 @@ const SubjectTable = ({
             label="Export to Excel"
             icon="pi pi-file-excel"
             onClick={exportToExcel}
-            //className="p-button-success"
             style={{
               marginRight: "10px",
-              color: "var( --light-color)",
+              color: "var(--light-color)",
               fontSize: "16px",
               padding: "12px 20px",
               backgroundColor: "var(--primary-color)",
@@ -152,19 +171,18 @@ const SubjectTable = ({
             icon="pi pi-file-pdf"
             onClick={exportToPDF}
             style={{
-              color: "var( --light-color)",
+              color: "var(--light-color)",
               fontSize: "16px",
               padding: "12px 20px",
               backgroundColor: "var(--primary-color)",
               borderRadius: "8px",
               fontFamily: "ui-sans-serif",
             }}
-            //className="p-button-warning"
           />
         </div>
       </div>
       <DataTable
-        value={products}
+        value={subjects}
         editMode="row"
         onRowEditComplete={onRowEditComplete}
         paginator
@@ -178,14 +196,32 @@ const SubjectTable = ({
           field="serialNumber"
           header="Serial Number"
           body={serialNumberBodyTemplate}
-          style={{ width: "10%", padding: "8px" }}
+          style={{ width: "20%", padding: "8px" }}
         ></Column>
         <Column
-          field="stream"
+          field="subject_name"
           header="Name"
           sortable
           editor={(options) => textEditor(options)}
+          style={{ width: "20%", padding: "8px" }}
+        ></Column>
+        <Column
+          field="subject_code"
+          header="Subject Code"
+          sortable
+          style={{ width: "20%", padding: "8px" }}
+        ></Column>
+        <Column
+          field="subject_image"
+          header="Image"
+          body={imageBodyTemplate}
           style={{ width: "10%", padding: "8px" }}
+        ></Column>
+        <Column
+          field="subject_type"
+          header="Type"
+          sortable
+          style={{ width: "20%", padding: "8px" }}
         ></Column>
         <Column
           rowEditor

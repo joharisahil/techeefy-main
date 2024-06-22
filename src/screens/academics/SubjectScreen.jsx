@@ -12,22 +12,27 @@ const Subject = () => {
     title: "Subject",
   };
 
-  const [products, setProducts] = useState(null); // State to manage table data
+  const [subjects, setSubjects] = useState(null); // State to manage table data
+
+  const fetchSubjects = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/subject/get-subjects"
+      );
+      if (response.ok) {
+        const result = await response.json();
+        setSubjects(result.subjects); // Assuming the API response has a "subjects" field
+      } else {
+        toast.error("Failed to fetch subjects. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error while fetching subjects:", error);
+      toast.error("An error occurred while fetching the subjects.");
+    }
+  };
 
   useEffect(() => {
-    // Fetch data for the table initially
-    fetch("http://localhost:3000/stream/get-stream")
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.dataFound) {
-          const formattedData = data.streams.map((item, index) => ({
-            ...item,
-            serialNumber: index + 1,
-            stream: item.stream_name,
-          }));
-          setProducts(formattedData);
-        }
-      });
+    fetchSubjects();
   }, []);
 
   const addSubject = async (formData) => {
@@ -40,12 +45,31 @@ const Subject = () => {
         }
       );
 
-      const data = await response.json();
-
-      if (data.result.success) {
-        toast.success("Record Inserted Successfully");
+      if (response.ok) {
+        const result = await response.json();
+        if (result.result.success) {
+          setSubjects((prevSubjects) => [
+            ...prevSubjects,
+            {
+              subject_id: result.result.subjectId,
+              subject_name: formData.get("subject_name"),
+              subject_code: formData.get("subject_code"),
+              subject_type: formData.get("subject_type"),
+              subject_background_color: formData.get(
+                "subject_background_color"
+              ),
+              subject_image: formData.get("subject_image").name, // Assuming you need the image name
+            },
+          ]);
+          toast.success("Subject created successfully!");
+        } else {
+          toast.error(result.message || "An error occurred. Please try again.");
+        }
       } else {
-        toast.error("Record already exists");
+        const errorData = await response.json();
+        toast.error(
+          errorData.message || "An error occurred. Please try again."
+        );
       }
     } catch (error) {
       console.error("Error while adding subject:", error);
@@ -131,7 +155,8 @@ const Subject = () => {
       <section className="content-section-screen">
         <SubjectForm addSubject={addSubject} />
         <SubjectTable
-          products={products}
+          subjects={subjects}
+          setSubjects={setSubjects}
           //addStream={addStream}
           updateStream={updateStream}
           deleteStream={deleteStream}
