@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
+import { Dialog } from "primereact/dialog";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
+import { RadioButton } from "primereact/radiobutton";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
@@ -19,6 +21,8 @@ const SubjectTable = ({
   updateStream,
   deleteStream,
 }) => {
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [isDialogVisible, setIsDialogVisible] = useState(false);
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
@@ -45,6 +49,33 @@ const SubjectTable = ({
       />
     );
   };
+
+  const editTemplate = (rowData) => {
+    return (
+      <Button
+        icon="pi pi-pencil"
+        className="p-button-rounded p-button-text"
+        onClick={() => onEditRow(rowData)}
+      />
+    );
+  };
+
+  const onEditRow = (rowData) => {
+    setSelectedRow(rowData);
+    setIsDialogVisible(true);
+  };
+
+  const hideDialog = (rowData) => {
+    //setSelectedRow(" ");
+    setIsDialogVisible(false);
+  };
+
+  const productDialogFooter = (
+    <React.Fragment>
+      <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
+      <Button label="Save" icon="pi pi-check" />
+    </React.Fragment>
+  );
 
   const actionBodyTemplate = (rowData) => {
     return (
@@ -224,7 +255,7 @@ const SubjectTable = ({
           style={{ width: "20%", padding: "8px" }}
         ></Column>
         <Column
-          rowEditor
+          body={editTemplate}
           header="Edit"
           style={{ width: "10%", minWidth: "2rem" }}
         ></Column>
@@ -234,6 +265,102 @@ const SubjectTable = ({
           style={{ width: "10%", minWidth: "2rem" }}
         ></Column>
       </DataTable>
+      <Dialog
+        visible={isDialogVisible}
+        style={{
+          width: "32rem",
+          backgroundColor: "var(--secondary-color)",
+          color: "var(--text-color-inverted)",
+          border: "2px solid var(--text-color-inverted)",
+          fontWeight: "bold",
+          borderRadius: "8px",
+          padding: "25px",
+        }}
+        breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+        header="Edit"
+        modal
+        dismissableMask={true}
+        footer={productDialogFooter}
+        onHide={hideDialog}
+      >
+        <div className="field" style={{ marginTop: "20px" }}>
+          <label htmlFor="name" className="font-bold">
+            Name
+          </label>
+          <InputText
+            id="name"
+            // value={product.name}
+            // onChange={(e) => onInputChange(e, "name")}
+            required
+            autoFocus
+            className="p-invalid"
+            //className={classNames({ "p-invalid": submitted && !product.name })}
+          />
+          {/* {submitted && !product.name && (
+            <small className="p-error">Name is required.</small>
+          )} */}
+        </div>
+        <div className="field">
+          <label htmlFor="description" className="font-bold">
+            Description
+          </label>
+          <InputText
+            id="description"
+            // value={product.description}
+            // onChange={(e) => onInputChange(e, "description")}
+            required
+            rows={3}
+            cols={20}
+          />
+        </div>
+        <div style={{ padding: "10px" }}>
+          <div className="field">
+            <label className="mb-3 font-bold">Category</label>
+            <div className="formgrid grid">
+              <div className="field-radiobutton col-6">
+                <RadioButton
+                  inputId="category1"
+                  name="category"
+                  value="Accessories"
+                  // onChange={onCategoryChange}
+                  // checked={product.category === "Accessories"}
+                />
+                <label htmlFor="category1">Accessories</label>
+              </div>
+              <div className="field-radiobutton col-6">
+                <RadioButton
+                  inputId="category2"
+                  name="category"
+                  value="Clothing"
+                  // onChange={onCategoryChange}
+                  // checked={product.category === "Clothing"}
+                />
+                <label htmlFor="category2">Clothing</label>
+              </div>
+              <div className="field-radiobutton col-6">
+                <RadioButton
+                  inputId="category3"
+                  name="category"
+                  value="Electronics"
+                  // onChange={onCategoryChange}
+                  // checked={product.category === "Electronics"}
+                />
+                <label htmlFor="category3">Electronics</label>
+              </div>
+              <div className="field-radiobutton col-6">
+                <RadioButton
+                  inputId="category4"
+                  name="category"
+                  value="Fitness"
+                  // onChange={onCategoryChange}
+                  // checked={product.category === "Fitness"}
+                />
+                <label htmlFor="category4">Fitness</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 };
