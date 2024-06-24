@@ -275,6 +275,7 @@ const SubjectTable = ({
           fontWeight: "bold",
           borderRadius: "8px",
           padding: "25px",
+          boxShadow: "10px #fff",
         }}
         breakpoints={{ "960px": "75vw", "641px": "90vw" }}
         header="Edit"
@@ -284,6 +285,7 @@ const SubjectTable = ({
         onHide={hideDialog}
       >
         <div className="field" style={{ marginTop: "20px" }}>
+          {/* <div className="dialog-first-label"> */}
           <label htmlFor="name" className="font-bold">
             Name
           </label>
@@ -299,6 +301,7 @@ const SubjectTable = ({
           {/* {submitted && !product.name && (
             <small className="p-error">Name is required.</small>
           )} */}
+          {/* </div> */}
         </div>
         <div className="field">
           <label htmlFor="description" className="font-bold">
