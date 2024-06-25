@@ -72,8 +72,13 @@ const SubjectTable = ({
 
   const productDialogFooter = (
     <React.Fragment>
-      <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
-      <Button label="Save" icon="pi pi-check" />
+      <Button
+        label="Cancel"
+        className="dialog-btn"
+        outlined
+        onClick={hideDialog}
+      />
+      <Button label="Save" className="dialog-btn" />
     </React.Fragment>
   );
 
@@ -271,7 +276,7 @@ const SubjectTable = ({
           width: "32rem",
           backgroundColor: "var(--secondary-color)",
           color: "var(--text-color-inverted)",
-          border: "2px solid var(--text-color-inverted)",
+          border: "3px solid var(--text-color-inverted)",
           fontWeight: "bold",
           borderRadius: "8px",
           padding: "25px",
@@ -284,43 +289,38 @@ const SubjectTable = ({
         footer={productDialogFooter}
         onHide={hideDialog}
       >
-        <div className="field" style={{ marginTop: "20px" }}>
-          {/* <div className="dialog-first-label"> */}
-          <label htmlFor="name" className="font-bold">
-            Name
-          </label>
-          <InputText
-            id="name"
-            // value={product.name}
-            // onChange={(e) => onInputChange(e, "name")}
-            required
-            autoFocus
-            className="p-invalid"
-            //className={classNames({ "p-invalid": submitted && !product.name })}
-          />
-          {/* {submitted && !product.name && (
+        <div style={{ overflowX: "hidden" }}>
+          <div className="field" style={{ marginTop: "22px" }}>
+            <div className="dialog-label">
+              <label htmlFor="name" className="font-bold">
+                Name
+              </label>
+              <textarea
+                id="name"
+                // value={product.name}
+                // onChange={(e) => onInputChange(e, "name")}
+                required
+                autoFocus
+                className="dialog-input-text"
+                // style={{
+                //   height: "32px",
+                //   border: " 1px solid var(--text-color-inverted)",
+                //   borderRadius: "10px",
+                //   background: "var(--input-background-color)",
+                //   padding: "8px",
+                //   color: "var(--base-text-color)",
+                // }}
+                //className={classNames({ "p-invalid": submitted && !product.name })}
+              />
+              {/* {submitted && !product.name && (
             <small className="p-error">Name is required.</small>
           )} */}
-          {/* </div> */}
-        </div>
-        <div className="field">
-          <label htmlFor="description" className="font-bold">
-            Description
-          </label>
-          <InputText
-            id="description"
-            // value={product.description}
-            // onChange={(e) => onInputChange(e, "description")}
-            required
-            rows={3}
-            cols={20}
-          />
-        </div>
-        <div style={{ padding: "10px" }}>
+            </div>
+          </div>
           <div className="field">
-            <label className="mb-3 font-bold">Category</label>
-            <div className="formgrid grid">
-              <div className="field-radiobutton col-6">
+            <label className="mb-3 font-bold">Type</label>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div className="field-radiobutton ">
                 <RadioButton
                   inputId="category1"
                   name="category"
@@ -328,9 +328,9 @@ const SubjectTable = ({
                   // onChange={onCategoryChange}
                   // checked={product.category === "Accessories"}
                 />
-                <label htmlFor="category1">Accessories</label>
+                <label htmlFor="category1">Practical</label>
               </div>
-              <div className="field-radiobutton col-6">
+              <div className="field-radiobutton ">
                 <RadioButton
                   inputId="category2"
                   name="category"
@@ -338,30 +338,88 @@ const SubjectTable = ({
                   // onChange={onCategoryChange}
                   // checked={product.category === "Clothing"}
                 />
-                <label htmlFor="category2">Clothing</label>
-              </div>
-              <div className="field-radiobutton col-6">
-                <RadioButton
-                  inputId="category3"
-                  name="category"
-                  value="Electronics"
-                  // onChange={onCategoryChange}
-                  // checked={product.category === "Electronics"}
-                />
-                <label htmlFor="category3">Electronics</label>
-              </div>
-              <div className="field-radiobutton col-6">
-                <RadioButton
-                  inputId="category4"
-                  name="category"
-                  value="Fitness"
-                  // onChange={onCategoryChange}
-                  // checked={product.category === "Fitness"}
-                />
-                <label htmlFor="category4">Fitness</label>
+                <label htmlFor="category2">Theory</label>
               </div>
             </div>
           </div>
+          <div className="field">
+            <div className="dialog-label">
+              <label htmlFor="description" className="font-bold">
+                Subject Code
+              </label>
+              <textarea
+                id="description"
+                // value={product.description}
+                // onChange={(e) => onInputChange(e, "description")}
+                className="dialog-input-text"
+                required
+                rows={3}
+                cols={20}
+              />
+            </div>
+          </div>
+          <div className="field">
+            <div className="dialog-label">
+              <label htmlFor="description" className="font-bold">
+                Image
+              </label>
+              {/* <textarea
+                id="description"
+                // value={product.description}
+                // onChange={(e) => onInputChange(e, "description")}
+                className="dialog-input-text"
+                required
+                rows={3}
+                cols={20}
+              /> */}
+              <div className="dialog-input-text">
+                <div className="dialog-image-upload-container">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    // onChange={handleImageUpload}
+                    id="image-upload"
+                    className="image-upload-input"
+                  />
+                  <input
+                    type="text"
+                    // value={fileName}
+                    readOnly
+                    placeholder="No file chosen"
+                    className="image-upload-filename"
+                  />
+                  <label htmlFor="image-upload" className="image-upload-button">
+                    Upload
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* <div className="form-area">
+        <div className="form-second-title">Image</div>
+        <div className="form-textarea">
+          <div className="image-upload-container">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              id="image-upload"
+              className="image-upload-input"
+            />
+            <input
+              type="text"
+              value={fileName}
+              readOnly
+              placeholder="No file chosen"
+              className="image-upload-filename"
+            />
+            <label htmlFor="image-upload" className="image-upload-button">
+              Upload
+            </label>
+          </div>
+          {imageError && <div className="error-message">{imageError}</div>}
+        </div>
+      </div> */}
         </div>
       </Dialog>
     </div>
