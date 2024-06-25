@@ -278,9 +278,8 @@ const SubjectTable = ({
           color: "var(--text-color-inverted)",
           border: "3px solid var(--text-color-inverted)",
           fontWeight: "bold",
-          borderRadius: "8px",
+          borderRadius: "12px",
           padding: "25px",
-          boxShadow: "10px #fff",
         }}
         breakpoints={{ "960px": "75vw", "641px": "90vw" }}
         header="Edit"
@@ -288,6 +287,7 @@ const SubjectTable = ({
         dismissableMask={true}
         footer={productDialogFooter}
         onHide={hideDialog}
+        draggable={false}
       >
         <div style={{ overflowX: "hidden" }}>
           <div className="field" style={{ marginTop: "22px" }}>
@@ -379,16 +379,19 @@ const SubjectTable = ({
                     accept="image/*"
                     // onChange={handleImageUpload}
                     id="image-upload"
-                    className="image-upload-input"
+                    className="dialog-image-upload-input"
                   />
                   <input
                     type="text"
                     // value={fileName}
                     readOnly
                     placeholder="No file chosen"
-                    className="image-upload-filename"
+                    className="dialog-image-upload-filename"
                   />
-                  <label htmlFor="image-upload" className="image-upload-button">
+                  <label
+                    htmlFor="image-upload"
+                    className="dialog-image-upload-button"
+                  >
                     Upload
                   </label>
                 </div>
