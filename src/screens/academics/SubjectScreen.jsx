@@ -77,43 +77,37 @@ const Subject = () => {
     }
   };
 
-  const updateStream = async (stream_id, stream, index) => {
-    const url = `http://localhost:3000/stream/update-stream/?stream_id=${stream_id}&stream_name=${encodeURIComponent(
-      stream
-    )}`;
-
+  const updateSubject = async (subject_id, formData) => {
     try {
-      const response = await fetch(url, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
+      const response = await fetch(
+        `http://localhost:3000/subject/update-subject`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(subject_id, formData),
+        }
+      );
+      console.log("test", response);
       if (response.ok) {
         const result = await response.json();
-        if (result.result.success) {
-          // Check if sectionExist is false to avoid updating existing values
-          if (!result.result.streamExist) {
-            let updatedProducts = [...products];
-            updatedProducts[index].stream = stream;
-            setProducts(updatedProducts);
-            toast.success("Section updated successfully!");
-          } else {
-            toast.error(
-              "Section name already exists. Please choose a different name."
-            );
-          }
-        } else {
-          toast.error(result.message || "Failed to update section.");
-        }
+        const updatedSubjects = subjects.map((subject) =>
+          subject.subject_id === subjectId ? result.updatedSubject : subject
+        );
+        setSubjects(updatedSubjects);
+        toast.success("Subject updated successfully!");
       } else {
         const errorData = await response.json();
-        toast.error(errorData.message || "Failed to update section.");
+        console.error(
+          "Failed to update subject:",
+          errorData.message || response.statusText
+        );
+        toast.error("Failed to update subject. Please try again.");
       }
     } catch (error) {
-      console.error("Error updating section:", error);
-      toast.error("Error updating section. Please try again.");
+      console.error("Error updating subject:", error);
+      toast.error("An error occurred while updating the subject.");
     }
   };
 
@@ -127,25 +121,25 @@ const Subject = () => {
       );
 
       if (response.ok) {
-        setProducts((prevProducts) => {
+        setSubjects((prevSubjects) => {
           // Filter out the deleted section
-          const updatedProducts = prevProducts.filter(
-            (product) => product.stream_id !== stream_id
+          const updatedSubjects = prevSubjects.filter(
+            (subject) => subject.stream_id !== stream_id
           );
 
           // Reassign serial numbers
-          return updatedProducts.map((product, index) => ({
-            ...product,
+          return updatedSubjects.map((subject, index) => ({
+            ...subject,
             serialNumber: index + 1,
           }));
         });
-        toast.success("Section deleted successfully!");
+        toast.success("Subject deleted successfully!");
       } else {
-        toast.error("Failed to delete section.");
+        toast.error("Failed to delete subject.");
       }
     } catch (error) {
-      console.error("Error deleting section:", error);
-      toast.error("Error deleting section. Please try again.");
+      console.error("Error deleting subject:", error);
+      toast.error("Error deleting subject. Please try again.");
     }
   };
 
@@ -157,8 +151,7 @@ const Subject = () => {
         <SubjectTable
           subjects={subjects}
           setSubjects={setSubjects}
-          //addStream={addStream}
-          updateStream={updateStream}
+          updateSubject={updateSubject}
           deleteStream={deleteStream}
         />
       </section>

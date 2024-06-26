@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { Column } from "primereact/column";
@@ -18,20 +18,28 @@ import "jspdf-autotable";
 const SubjectTable = ({
   subjects,
   setSubjects,
-  updateStream,
+  updateSubject,
   deleteStream,
 }) => {
   const [selectedRow, setSelectedRow] = useState(null);
+  const [backgroundColor, setBackgroundColor] = useState("#ffff");
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
 
-  const onRowEditComplete = async (e) => {
-    const { newData, index } = e;
-    const { stream_id, stream } = newData;
-    await updateStream(stream_id, stream, index);
-  };
+  const [formData, setFormData] = useState({
+    subject_id: "",
+    subject_name: "",
+    subject_code: "",
+    subject_type: "",
+    subject_image: "",
+    subject_image_name: "",
+  });
+
+  // const onRowEditComplete = async (e) => {
+  //   const { newData, index } = e;
+  // };
 
   const textEditor = (options) => {
     return (
@@ -62,11 +70,39 @@ const SubjectTable = ({
 
   const onEditRow = (rowData) => {
     setSelectedRow(rowData);
+    setFormData({ ...rowData, subject_image_name: "" });
     setIsDialogVisible(true);
   };
 
-  const hideDialog = (rowData) => {
-    //setSelectedRow(" ");
+  const hideDialog = () => {
+    setSelectedRow(null);
+    setIsDialogVisible(false);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    // const reader = new FileReader();
+    console.log("test", file);
+    // reader.onloadend = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      subject_image: file,
+      subject_image_name: file.name,
+    }));
+    // };
+    // if (file) {
+    //   reader.readAsDataURL(file);
+    // }
+    console.log("test2", prevData);
+  };
+
+  const handleSave = async () => {
+    await updateSubject(formData.subject_id, formData);
     setIsDialogVisible(false);
   };
 
@@ -78,7 +114,7 @@ const SubjectTable = ({
         outlined
         onClick={hideDialog}
       />
-      <Button label="Save" className="dialog-btn" />
+      <Button label="Save" className="dialog-btn" onClick={handleSave} />
     </React.Fragment>
   );
 
@@ -97,9 +133,7 @@ const SubjectTable = ({
   };
 
   const imageBodyTemplate = (rowData) => {
-    const imageUrl = `data:image/jpeg;base64,${rowData.subject_image}`;
-    console.log(`Image for ${rowData.subject_name}:`, rowData.subject_image);
-
+    const imageUrl = `${rowData.subject_image}`;
     return (
       <img
         src={imageUrl}
@@ -220,7 +254,7 @@ const SubjectTable = ({
       <DataTable
         value={subjects}
         editMode="row"
-        onRowEditComplete={onRowEditComplete}
+        // onRowEditComplete={onRowEditComplete}
         paginator
         rows={5}
         removableSort
@@ -292,29 +326,18 @@ const SubjectTable = ({
         <div style={{ overflowX: "hidden" }}>
           <div className="field" style={{ marginTop: "22px" }}>
             <div className="dialog-label">
-              <label htmlFor="name" className="font-bold">
+              <label htmlFor="subject_name" className="font-bold">
                 Name
               </label>
               <textarea
-                id="name"
-                // value={product.name}
-                // onChange={(e) => onInputChange(e, "name")}
+                id="subject_name"
+                name="subject_name"
+                value={formData.subject_name}
+                onChange={handleInputChange}
                 required
                 autoFocus
                 className="dialog-input-text"
-                // style={{
-                //   height: "32px",
-                //   border: " 1px solid var(--text-color-inverted)",
-                //   borderRadius: "10px",
-                //   background: "var(--input-background-color)",
-                //   padding: "8px",
-                //   color: "var(--base-text-color)",
-                // }}
-                //className={classNames({ "p-invalid": submitted && !product.name })}
               />
-              {/* {submitted && !product.name && (
-            <small className="p-error">Name is required.</small>
-          )} */}
             </div>
           </div>
           <div className="field">
@@ -322,35 +345,36 @@ const SubjectTable = ({
             <div style={{ display: "flex", flexDirection: "column" }}>
               <div className="field-radiobutton ">
                 <RadioButton
-                  inputId="category1"
-                  name="category"
-                  value="Accessories"
-                  // onChange={onCategoryChange}
-                  // checked={product.category === "Accessories"}
+                  inputId="type_practical"
+                  name="subject_type"
+                  value="Practical"
+                  checked={formData.subject_type === "Practical"}
+                  onChange={handleInputChange}
                 />
-                <label htmlFor="category1">Practical</label>
+                <label htmlFor="type_practical">Practical</label>
               </div>
               <div className="field-radiobutton ">
                 <RadioButton
-                  inputId="category2"
-                  name="category"
-                  value="Clothing"
-                  // onChange={onCategoryChange}
-                  // checked={product.category === "Clothing"}
+                  inputId="type_theory"
+                  name="subject_type"
+                  value="Theory"
+                  checked={formData.subject_type === "Theory"}
+                  onChange={handleInputChange}
                 />
-                <label htmlFor="category2">Theory</label>
+                <label htmlFor="type_theory">Theory</label>
               </div>
             </div>
           </div>
           <div className="field">
             <div className="dialog-label">
-              <label htmlFor="description" className="font-bold">
+              <label htmlFor="subject_code" className="font-bold">
                 Subject Code
               </label>
               <textarea
-                id="description"
-                // value={product.description}
-                // onChange={(e) => onInputChange(e, "description")}
+                id="subject_code"
+                name="subject_code"
+                value={formData.subject_code}
+                onChange={handleInputChange}
                 className="dialog-input-text"
                 required
                 rows={3}
@@ -360,36 +384,26 @@ const SubjectTable = ({
           </div>
           <div className="field">
             <div className="dialog-label">
-              <label htmlFor="description" className="font-bold">
+              <label htmlFor="subject_image" className="font-bold">
                 Image
               </label>
-              {/* <textarea
-                id="description"
-                // value={product.description}
-                // onChange={(e) => onInputChange(e, "description")}
-                className="dialog-input-text"
-                required
-                rows={3}
-                cols={20}
-              /> */}
               <div className="dialog-input-text">
                 <div className="dialog-image-upload-container">
                   <input
                     type="file"
                     accept="image/*"
-                    // onChange={handleImageUpload}
-                    id="image-upload"
+                    id="dialog_image-upload"
                     className="dialog-image-upload-input"
+                    onChange={handleImageChange}
                   />
                   <input
                     type="text"
-                    // value={fileName}
                     readOnly
-                    placeholder="No file chosen"
+                    value={formData.subject_image || "No file chosen"}
                     className="dialog-image-upload-filename"
                   />
                   <label
-                    htmlFor="image-upload"
+                    htmlFor="dialog_image-upload"
                     className="dialog-image-upload-button"
                   >
                     Upload
@@ -398,31 +412,6 @@ const SubjectTable = ({
               </div>
             </div>
           </div>
-          {/* <div className="form-area">
-        <div className="form-second-title">Image</div>
-        <div className="form-textarea">
-          <div className="image-upload-container">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              id="image-upload"
-              className="image-upload-input"
-            />
-            <input
-              type="text"
-              value={fileName}
-              readOnly
-              placeholder="No file chosen"
-              className="image-upload-filename"
-            />
-            <label htmlFor="image-upload" className="image-upload-button">
-              Upload
-            </label>
-          </div>
-          {imageError && <div className="error-message">{imageError}</div>}
-        </div>
-      </div> */}
         </div>
       </Dialog>
     </div>
