@@ -32,7 +32,7 @@ const SubjectTable = ({
     subject_name: "",
     subject_code: "",
     subject_type: "",
-    subject_image: "",
+    subject_image: null,
   });
 
   const editTemplate = (rowData) => {
@@ -66,7 +66,7 @@ const SubjectTable = ({
     if (file) {
       setFormData((prevData) => ({
         ...prevData,
-        subject_image: file.name,
+        subject_image: file,
       }));
     }
   };
@@ -103,7 +103,7 @@ const SubjectTable = ({
   };
 
   const imageBodyTemplate = (rowData) => {
-    const imageUrl = rowData.subject_image;
+    const imageUrl = JSON.stringify(rowData.subject_image);
     return (
       <img
         src={imageUrl}

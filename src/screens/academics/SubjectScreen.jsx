@@ -79,14 +79,18 @@ const Subject = () => {
 
   const updateSubject = async (subject_id, formData) => {
     try {
+      const foormData = new FormData();
+      foormData.append("subject_name", formData.subject_name);
+      foormData.append("subject_code", formData.subject_code);
+      foormData.append("subject_type", formData.subject_type);
+      foormData.append("subject_image", formData.subject_image);
+      foormData.append("subject_id", subject_id);
+      console.log(formData);
       const response = await fetch(
         `http://localhost:3000/subject/update-subject`,
         {
           method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ subject_id, ...formData }),
+          body: foormData,
         }
       );
       if (response.ok) {
