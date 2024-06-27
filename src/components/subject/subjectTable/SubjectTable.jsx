@@ -22,7 +22,6 @@ const SubjectTable = ({
   deleteStream,
 }) => {
   const [selectedRow, setSelectedRow] = useState(null);
-  const [backgroundColor, setBackgroundColor] = useState("#ffff");
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -34,29 +33,7 @@ const SubjectTable = ({
     subject_code: "",
     subject_type: "",
     subject_image: "",
-    subject_image_name: "",
   });
-
-  // const onRowEditComplete = async (e) => {
-  //   const { newData, index } = e;
-  // };
-
-  const textEditor = (options) => {
-    return (
-      <InputText
-        type="text"
-        value={options.value}
-        onChange={(e) => options.editorCallback(e.target.value)}
-        style={{
-          backgroundColor: "var(--secondary-color)",
-          color: "var(--text-color-inverted)",
-          width: "100%",
-          fontSize: "16px",
-          padding: "5px",
-        }}
-      />
-    );
-  };
 
   const editTemplate = (rowData) => {
     return (
@@ -70,7 +47,7 @@ const SubjectTable = ({
 
   const onEditRow = (rowData) => {
     setSelectedRow(rowData);
-    setFormData({ ...rowData, subject_image_name: "" });
+    setFormData({ ...rowData });
     setIsDialogVisible(true);
   };
 
@@ -86,19 +63,12 @@ const SubjectTable = ({
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    // const reader = new FileReader();
-    console.log("test", file);
-    // reader.onloadend = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      subject_image: file,
-      subject_image_name: file.name,
-    }));
-    // };
-    // if (file) {
-    //   reader.readAsDataURL(file);
-    // }
-    console.log("test2", prevData);
+    if (file) {
+      setFormData((prevData) => ({
+        ...prevData,
+        subject_image: file.name,
+      }));
+    }
   };
 
   const handleSave = async () => {
@@ -133,14 +103,11 @@ const SubjectTable = ({
   };
 
   const imageBodyTemplate = (rowData) => {
-    const imageUrl = `${rowData.subject_image}`;
+    const imageUrl = rowData.subject_image;
     return (
       <img
         src={imageUrl}
-        // alt={rowData.subject_name}
-        // onError={(e) => {
-        //   e.target.src = "path/to/placeholder.jpg"; // Fallback image
-        // }}
+        //alt={rowData.subject_name}
         style={{ width: "30px", height: "30px", objectFit: "cover" }}
       />
     );
@@ -254,7 +221,6 @@ const SubjectTable = ({
       <DataTable
         value={subjects}
         editMode="row"
-        // onRowEditComplete={onRowEditComplete}
         paginator
         rows={5}
         removableSort
@@ -272,7 +238,6 @@ const SubjectTable = ({
           field="subject_name"
           header="Name"
           sortable
-          editor={(options) => textEditor(options)}
           style={{ width: "20%", padding: "8px" }}
         ></Column>
         <Column
@@ -343,7 +308,7 @@ const SubjectTable = ({
           <div className="field">
             <label className="mb-3 font-bold">Type</label>
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <div className="field-radiobutton ">
+              <div className="field-radiobutton">
                 <RadioButton
                   inputId="type_practical"
                   name="subject_type"
@@ -353,7 +318,7 @@ const SubjectTable = ({
                 />
                 <label htmlFor="type_practical">Practical</label>
               </div>
-              <div className="field-radiobutton ">
+              <div className="field-radiobutton">
                 <RadioButton
                   inputId="type_theory"
                   name="subject_type"
@@ -399,7 +364,7 @@ const SubjectTable = ({
                   <input
                     type="text"
                     readOnly
-                    value={formData.subject_image || "No file chosen"}
+                    value={formData.subject_image}
                     className="dialog-image-upload-filename"
                   />
                   <label

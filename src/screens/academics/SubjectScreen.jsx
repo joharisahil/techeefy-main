@@ -21,7 +21,7 @@ const Subject = () => {
       );
       if (response.ok) {
         const result = await response.json();
-        setSubjects(result.subjects); // Assuming the API response has a "subjects" field
+        setSubjects(result.subjects);
       } else {
         toast.error("Failed to fetch subjects. Please try again.");
       }
@@ -86,14 +86,13 @@ const Subject = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(subject_id, formData),
+          body: JSON.stringify({ subject_id, ...formData }),
         }
       );
-      console.log("test", response);
       if (response.ok) {
         const result = await response.json();
         const updatedSubjects = subjects.map((subject) =>
-          subject.subject_id === subjectId ? result.updatedSubject : subject
+          subject.subject_id === subject_id ? result.updatedSubject : subject
         );
         setSubjects(updatedSubjects);
         toast.success("Subject updated successfully!");
