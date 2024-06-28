@@ -58,7 +58,7 @@ const Subject = () => {
               subject_background_color: formData.get(
                 "subject_background_color"
               ),
-              subject_image: formData.get("subject_image").name, // Assuming you need the image name
+              subject_image: formData.get("subject_image").name,
             },
           ]);
           toast.success("Subject created successfully!");
