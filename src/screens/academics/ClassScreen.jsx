@@ -30,7 +30,7 @@ const Class = () => {
         setClassList((prevList) => [
           ...prevList,
           {
-            id: data.result.class_id, // Assuming section_id is the unique identifier
+            id: data.result.class_id,
             name: formData.class_name,
             sections: formData.class_section,
             streams: formData.class_stream,
