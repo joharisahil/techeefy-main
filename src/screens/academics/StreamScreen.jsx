@@ -131,7 +131,7 @@ const Stream = () => {
             serialNumber: index + 1,
           }));
         });
-        toast.success("Section deleted successfully!");
+        toast.success("Stream deleted successfully!");
       } else {
         toast.error("Failed to delete section.");
       }
