@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AreaTop } from "../../components";
@@ -13,6 +13,24 @@ const Class = () => {
   };
 
   const [classList, setClassList] = useState([]);
+
+  useEffect(() => {
+    // Fetch data for the table initially
+    fetch("http://localhost:3000/class/get-classes")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.dataFound) {
+          const formattedData = data.classes.map((item, index) => ({
+            ...item,
+            serialNumber: index + 1,
+            name: item.class_name,
+            sections: item.class_section,
+            streams: item.class_stream,
+          }));
+          setClassList(formattedData);
+        }
+      });
+  }, []);
 
   const addClass = async (formData) => {
     try {
@@ -31,6 +49,7 @@ const Class = () => {
           ...prevList,
           {
             id: data.result.class_id,
+            serialNumber: prevList.length + 1,
             name: formData.class_name,
             sections: formData.class_section,
             streams: formData.class_stream,
@@ -52,7 +71,6 @@ const Class = () => {
         <ClassForm addClass={addClass} />
         <ClassTable classList={classList} />
       </section>
-      <ToastContainer />
     </div>
   );
 };
