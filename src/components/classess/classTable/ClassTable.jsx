@@ -22,13 +22,12 @@ const ClassTable = ({ classList }) => {
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
 
-  // const [formData, setFormData] = useState({
-  //   subject_id: "",
-  //   subject_name: "",
-  //   subject_code: "",
-  //   subject_type: "",
-  //   subject_image: null,
-  // });
+  const [formData, setFormData] = useState({
+    class_id: "",
+    class_name: "",
+    class_section: "",
+    class_stream: "",
+  });
 
   const editTemplate = (rowData) => {
     return (
@@ -40,21 +39,21 @@ const ClassTable = ({ classList }) => {
     );
   };
 
-  // const onEditRow = (rowData) => {
-  //   setSelectedRow(rowData);
-  //   setFormData({ ...rowData });
-  //   setIsDialogVisible(true);
-  // };
+  const onEditRow = (rowData) => {
+    setSelectedRow(rowData);
+    setFormData({ ...rowData });
+    setIsDialogVisible(true);
+  };
 
-  // const hideDialog = () => {
-  //   setSelectedRow(null);
-  //   setIsDialogVisible(false);
-  // };
+  const hideDialog = () => {
+    setSelectedRow(null);
+    setIsDialogVisible(false);
+  };
 
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prevData) => ({ ...prevData, [name]: value }));
-  // };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
 
   // const handleImageChange = (e) => {
   //   const file = e.target.files[0];
@@ -66,22 +65,22 @@ const ClassTable = ({ classList }) => {
   //   }
   // };
 
-  // const handleSave = async () => {
-  //   await updateSubject(formData.subject_id, formData);
-  //   setIsDialogVisible(false);
-  // };
+  const handleSave = async () => {
+    // await updateSubject(formData.subject_id, formData);
+    setIsDialogVisible(false);
+  };
 
-  // const productDialogFooter = (
-  //   <React.Fragment>
-  //     <Button
-  //       label="Cancel"
-  //       className="dialog-btn"
-  //       outlined
-  //       onClick={hideDialog}
-  //     />
-  //     <Button label="Save" className="dialog-btn" onClick={handleSave} />
-  //   </React.Fragment>
-  // );
+  const productDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="Cancel"
+        className="dialog-btn"
+        outlined
+        onClick={hideDialog}
+      />
+      <Button label="Save" className="dialog-btn" onClick={handleSave} />
+    </React.Fragment>
+  );
 
   // const actionBodyTemplate = (rowData) => {
   //   return (
@@ -244,7 +243,6 @@ const ClassTable = ({ classList }) => {
         <Column
           field="streams"
           header="Stream"
-          // body={imageBodyTemplate}
           style={{ width: "10%", padding: "8px" }}
         ></Column>
         <Column
@@ -258,7 +256,7 @@ const ClassTable = ({ classList }) => {
           style={{ width: "10%", minWidth: "2rem" }}
         ></Column>
       </DataTable>
-      {/* <Dialog
+      <Dialog
         visible={isDialogVisible}
         style={{
           width: "32rem",
@@ -284,9 +282,9 @@ const ClassTable = ({ classList }) => {
                 Name
               </label>
               <textarea
-                id="subject_name"
-                name="subject_name"
-                value={formData.subject_name}
+                id="name"
+                name="class_name"
+                value={formData.class_name}
                 onChange={handleInputChange}
                 required
                 autoFocus
@@ -295,39 +293,14 @@ const ClassTable = ({ classList }) => {
             </div>
           </div>
           <div className="field">
-            <label className="mb-3 font-bold">Type</label>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div className="field-radiobutton">
-                <RadioButton
-                  inputId="type_practical"
-                  name="subject_type"
-                  value="Practical"
-                  checked={formData.subject_type === "Practical"}
-                  onChange={handleInputChange}
-                />
-                <label htmlFor="type_practical">Practical</label>
-              </div>
-              <div className="field-radiobutton">
-                <RadioButton
-                  inputId="type_theory"
-                  name="subject_type"
-                  value="Theory"
-                  checked={formData.subject_type === "Theory"}
-                  onChange={handleInputChange}
-                />
-                <label htmlFor="type_theory">Theory</label>
-              </div>
-            </div>
-          </div>
-          <div className="field">
             <div className="dialog-label">
               <label htmlFor="subject_code" className="font-bold">
-                Subject Code
+                Section
               </label>
               <textarea
                 id="subject_code"
                 name="subject_code"
-                value={formData.subject_code}
+                value={formData.class_section}
                 onChange={handleInputChange}
                 className="dialog-input-text"
                 required
@@ -338,36 +311,23 @@ const ClassTable = ({ classList }) => {
           </div>
           <div className="field">
             <div className="dialog-label">
-              <label htmlFor="subject_image" className="font-bold">
-                Image
+              <label htmlFor="subject_code" className="font-bold">
+                Stream
               </label>
-              <div className="dialog-input-text">
-                <div className="dialog-image-upload-container">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    id="dialog_image-upload"
-                    className="dialog-image-upload-input"
-                    onChange={handleImageChange}
-                  />
-                  <input
-                    type="text"
-                    readOnly
-                    value={formData.subject_image}
-                    className="dialog-image-upload-filename"
-                  />
-                  <label
-                    htmlFor="dialog_image-upload"
-                    className="dialog-image-upload-button"
-                  >
-                    Upload
-                  </label>
-                </div>
-              </div>
+              <textarea
+                id="subject_code"
+                name="subject_code"
+                value={formData.class_stream}
+                onChange={handleInputChange}
+                className="dialog-input-text"
+                required
+                rows={3}
+                cols={20}
+              />
             </div>
           </div>
         </div>
-      </Dialog> */}
+      </Dialog>
     </div>
   );
 };
