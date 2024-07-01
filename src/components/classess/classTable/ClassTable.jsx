@@ -236,7 +236,7 @@ const ClassTable = ({ classList }) => {
         ></Column>
         <Column
           field="sections"
-          header="Section"
+          header="Sections"
           sortable
           style={{ width: "20%", padding: "8px" }}
         ></Column>
