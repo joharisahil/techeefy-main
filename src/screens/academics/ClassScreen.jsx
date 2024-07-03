@@ -34,7 +34,7 @@ const Class = () => {
 
   const addClass = async (formData) => {
     try {
-      const response = await fetch("http://127.0.0.1:3000/class/add-class", {
+      const response = await fetch("http://localhost:3000/class/add-class", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -64,12 +64,55 @@ const Class = () => {
     }
   };
 
+  const updateClass = async (formData) => {
+    try {
+      const { class_id, ...data } = formData;
+      const url = `http://127.0.0.1:3000/class/update-class/${class_id}`;
+      const response = await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      if (result && result.result && result.result.success) {
+        toast.success("Record Updated Successfully");
+
+        // Update the classList state to reflect the changes
+        setClassList((prevList) =>
+          prevList.map((item) =>
+            item.id === class_id
+              ? {
+                  ...item,
+                  name: formData.class_name,
+                  sections: formData.class_section,
+                  streams: formData.class_stream,
+                }
+              : item
+          )
+        );
+      } else {
+        toast.error("Failed to update record");
+      }
+    } catch (error) {
+      console.error("Error updating class:", error);
+      toast.error("An error occurred while updating the class");
+    }
+  };
+
   return (
     <div className="content-area">
+      <ToastContainer />
       <AreaTop handleTitle={handleTitle} />
       <section className="content-section-screen">
         <ClassForm addClass={addClass} />
-        <ClassTable classList={classList} />
+        <ClassTable classList={classList} updateClass={updateClass} />
       </section>
     </div>
   );

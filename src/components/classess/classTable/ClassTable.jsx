@@ -14,7 +14,7 @@ import { saveAs } from "file-saver";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
-const ClassTable = ({ classList }) => {
+const ClassTable = ({ classList, updateClass }) => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const [filters, setFilters] = useState({
@@ -84,7 +84,8 @@ const ClassTable = ({ classList }) => {
   };
 
   const handleSave = async () => {
-    // await updateSubject(formData.subject_id, formData);
+    // Call updateClass with formData
+    await updateClass(formData);
     setIsDialogVisible(false);
   };
 
@@ -285,7 +286,7 @@ const ClassTable = ({ classList }) => {
                 options={streams}
                 onChange={handleInputChange}
                 placeholder="Select a Stream"
-                className="dialog-input-text custom-dropdown"
+                className="dialog-input-text"
                 required
               />
             </div>

@@ -20,6 +20,8 @@ import AssignTeacherSubject from "./screens/academics/AssignSubjectTeacherScreen
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
+import AddNewTeacherScreen from "./screens/teacher/addNewTeacherScreen";
+import TeacherDetailScreen from "./screens/teacher/teacherDetailScreen";
 //import "primereact/resources/themes/saga-blue/theme.css"; // or any other theme
 
 const router = createBrowserRouter(
@@ -33,6 +35,8 @@ const router = createBrowserRouter(
       <Route path="/assignclasssubjects" element={<AssignClassSubject />} />
       <Route path="/assignclassteacher" element={<AssignClassTeacher />} />
       <Route path="/assignsubjectteacher" element={<AssignTeacherSubject />} />
+      <Route path="/addnewteacher" element={<AddNewTeacherScreen />} />
+      <Route path="/teacherdetail" element={<TeacherDetailScreen />} />
       <Route path="*" element={<PageNotFound />} />
     </Route>
   )
