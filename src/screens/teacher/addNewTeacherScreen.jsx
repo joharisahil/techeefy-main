@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AreaTop } from "../../components";
-import ClassForm from "../../components/classess/classForm/ClassForm";
-import ClassTable from "../../components/classess/classTable/ClassTable";
-import "../../components/classess/classForm/ClassForm.scss";
-import "../../components/classess/classTable/ClassTable.scss";
+import "../../components/teacher/teacherForm/TeacherForm.scss";
+import "../../components/teacher/teacherTable/TeacherTable.scss";
+import TeacherForm from "../../components/teacher/teacherForm/TeacherForm";
+import TeacherTable from "../../components/teacher/teacherTable/TeacherTable";
 
 const AddNewTeacherScreen = () => {
   const handleTitle = {
@@ -17,8 +17,8 @@ const AddNewTeacherScreen = () => {
       <ToastContainer />
       <AreaTop handleTitle={handleTitle} />
       <section className="content-section-screen">
-        {/* <ClassForm addClass={addClass} />
-        <ClassTable classList={classList} updateClass={updateClass} /> */}
+        <TeacherForm />
+        <TeacherTable />
       </section>
     </div>
   );
