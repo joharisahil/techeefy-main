@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
-import { RadioButton } from "primereact/radiobutton";
+import { Dropdown } from "primereact/dropdown";
+import { Button } from "primereact/button";
+import { FilterMatchMode } from "primereact/api";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
-import { Button } from "primereact/button";
-import { MdDeleteOutline } from "react-icons/md";
-import { FilterMatchMode } from "primereact/api";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import jsPDF from "jspdf";
@@ -21,13 +20,42 @@ const ClassTable = ({ classList }) => {
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
-
   const [formData, setFormData] = useState({
     class_id: "",
     class_name: "",
     class_section: "",
     class_stream: "",
   });
+
+  const [sections, setSections] = useState([]);
+  const [streams, setStreams] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/class/get-section-and-stream"
+        );
+        const data = await response.json();
+        if (data.dataFound) {
+          const streamsData = data.streams.map((stream) => ({
+            label: stream.stream_name,
+            value: stream.stream_name,
+          }));
+          const sectionsData = data.sections.map((section) => ({
+            label: section.section_name,
+            value: section.section_name,
+          }));
+          setStreams(streamsData);
+          setSections(sectionsData);
+        }
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const editTemplate = (rowData) => {
     return (
@@ -55,16 +83,6 @@ const ClassTable = ({ classList }) => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  // const handleImageChange = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     setFormData((prevData) => ({
-  //       ...prevData,
-  //       subject_image: file,
-  //     }));
-  //   }
-  // };
-
   const handleSave = async () => {
     // await updateSubject(formData.subject_id, formData);
     setIsDialogVisible(false);
@@ -82,63 +100,9 @@ const ClassTable = ({ classList }) => {
     </React.Fragment>
   );
 
-  // const actionBodyTemplate = (rowData) => {
-  //   return (
-  //     <Button
-  //       icon={<MdDeleteOutline size={20} />}
-  //       style={{ margin: "9px", color: "var(--text-color-inverted)" }}
-  //       onClick={() => deleteStream(rowData.stream_id)}
-  //     />
-  //   );
-  // };
-
   const serialNumberBodyTemplate = (rowData, options) => {
     return options.rowIndex + 1;
   };
-
-  // const imageBodyTemplate = (rowData) => {
-  //   const imageUrl = JSON.stringify(rowData.subject_image);
-  //   return (
-  //     <img
-  //       src={imageUrl}
-  //       //alt={rowData.subject_name}
-  //       style={{ width: "30px", height: "30px", objectFit: "cover" }}
-  //     />
-  //   );
-  // };
-
-  // const exportToExcel = () => {
-  //   const exportData = subjects.map((subject, index) => ({
-  //     SerialNumber: index + 1,
-  //     SubjectName: subject.subject_name,
-  //     SubjectCode: subject.subject_code,
-  //     SubjectType: subject.subject_type,
-  //   }));
-
-  //   const worksheet = XLSX.utils.json_to_sheet(exportData);
-  //   const workbook = XLSX.utils.book_new();
-  //   XLSX.utils.book_append_sheet(workbook, worksheet, "Subjects");
-  //   const excelBuffer = XLSX.write(workbook, {
-  //     bookType: "xlsx",
-  //     type: "array",
-  //   });
-  //   const data = new Blob([excelBuffer], { type: "application/octet-stream" });
-  //   saveAs(data, "subjects.xlsx");
-  // };
-
-  // const exportToPDF = () => {
-  //   const doc = new jsPDF();
-  //   doc.autoTable({
-  //     head: [["Serial Number", "Name", "Code", "Type"]],
-  //     body: subjects.map((subject, index) => [
-  //       index + 1,
-  //       subject.subject_name,
-  //       subject.subject_code,
-  //       subject.subject_type,
-  //     ]),
-  //   });
-  //   doc.save("subjects.pdf");
-  // };
 
   return (
     <div className="section-form">
@@ -251,7 +215,7 @@ const ClassTable = ({ classList }) => {
           style={{ width: "10%", minWidth: "2rem" }}
         ></Column>
         <Column
-          //body={actionBodyTemplate}
+          // body={actionBodyTemplate}
           header="Delete"
           style={{ width: "10%", minWidth: "2rem" }}
         ></Column>
@@ -278,11 +242,11 @@ const ClassTable = ({ classList }) => {
         <div style={{ overflowX: "hidden" }}>
           <div className="field" style={{ marginTop: "22px" }}>
             <div className="dialog-label">
-              <label htmlFor="subject_name" className="font-bold">
+              <label htmlFor="class_name" className="font-bold">
                 Name
               </label>
-              <textarea
-                id="name"
+              <InputText
+                id="class_name"
                 name="class_name"
                 value={formData.class_name}
                 onChange={handleInputChange}
@@ -294,35 +258,35 @@ const ClassTable = ({ classList }) => {
           </div>
           <div className="field">
             <div className="dialog-label">
-              <label htmlFor="subject_code" className="font-bold">
+              <label htmlFor="class_section" className="font-bold">
                 Section
               </label>
-              <textarea
-                id="subject_code"
-                name="subject_code"
+              <Dropdown
+                id="class_section"
+                name="class_section"
                 value={formData.class_section}
+                options={sections}
                 onChange={handleInputChange}
-                className="dialog-input-text"
+                placeholder="Select a Section"
+                className="dialog-input-text "
                 required
-                rows={3}
-                cols={20}
               />
             </div>
           </div>
           <div className="field">
             <div className="dialog-label">
-              <label htmlFor="subject_code" className="font-bold">
+              <label htmlFor="class_stream" className="font-bold">
                 Stream
               </label>
-              <textarea
-                id="subject_code"
-                name="subject_code"
+              <Dropdown
+                id="class_stream"
+                name="class_stream"
                 value={formData.class_stream}
+                options={streams}
                 onChange={handleInputChange}
-                className="dialog-input-text"
+                placeholder="Select a Stream"
+                className="dialog-input-text custom-dropdown"
                 required
-                rows={3}
-                cols={20}
               />
             </div>
           </div>
