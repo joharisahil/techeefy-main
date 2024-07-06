@@ -13,7 +13,7 @@ const TeacherForm = () => {
         <div className="form-second-title">Name</div>
         <div className="form-textarea">
           <textarea
-            placeholder="Teacher Name"
+            placeholder="Name"
             // value={name}
             // onChange={(e) => setName(e.target.value)}
           ></textarea>
