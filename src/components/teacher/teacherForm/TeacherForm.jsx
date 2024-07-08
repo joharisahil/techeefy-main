@@ -10,7 +10,7 @@ const TeacherForm = () => {
     >
       <div className="form-top-title">Create Teacher</div>
       <div className="form-area">
-        <div className="form-second-title">Name</div>
+        <div className="form-second-title">Teacher Name</div>
         <div className="form-textarea">
           <textarea
             placeholder="Name"
